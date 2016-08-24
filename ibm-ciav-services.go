@@ -221,7 +221,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	var addressStr string
 	if args[0] == "PAN" {
 		customerIds, err = GetCustomerID(stub, args[1])
-		jsonResp = "["
+		// jsonResp = "["
 		for i := range customerIds {
 			customerId := customerIds[i]
 			identificationStr, err =GetIdentification(stub, customerId)
@@ -237,7 +237,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 				",\"KYC\":" + kycStr +
 				",\"address\":" + addressStr + "}"
 		}
-			jsonResp = jsonResp + "]"
+			// jsonResp = jsonResp + "]"
 	} else if args[0] == "CUST_ID" {
 		customerId := args[1]
 		identificationStr, err = GetIdentification(stub, customerId)
