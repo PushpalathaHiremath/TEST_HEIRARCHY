@@ -13,10 +13,11 @@ import (
 	// "github.com/op/go-logging"
 	"bytes"
 	"strings"
+	"strconv"
 )
 
 // var myLogger = logging.MustGetLogger("customer_address_details")
-
+var dummyValue = "99999"
 type ServicesChaincode struct {
 }
 
@@ -206,6 +207,8 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if function == "getCIAV" {
 		return t.getCIAV(stub, args)
+	}else function == "getCIAV" {
+		return t.GetAllKYC(stub, args)
 	}
 	return nil, errors.New("Received unknown function invocation")
 }
@@ -870,6 +873,7 @@ func CreateKycTable(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	}
 
 	err := stub.CreateTable("KYC", []*shim.ColumnDefinition{
+		&shim.ColumnDefinition{Name: "cummy", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "customerId", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "kycStatus", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "lastUpdated", Type: shim.ColumnDefinition_STRING, Key: false},
@@ -899,6 +903,7 @@ func AddKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	ok, err := stub.InsertRow("KYC", shim.Row{
 		Columns: []*shim.Column{
+			&shim.Column{Value: &shim.Column_String_{String_: dummyValue}},
 			&shim.Column{Value: &shim.Column_String_{String_: customerId}},
 			&shim.Column{Value: &shim.Column_String_{String_: kycStatus}},
 			&shim.Column{Value: &shim.Column_String_{String_: lastUpdated}},
@@ -930,6 +935,7 @@ func UpdateKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	ok, err := stub.ReplaceRow("KYC", shim.Row{
 		Columns: []*shim.Column{
+			&shim.Column{Value: &shim.Column_String_{String_: dummyValue}},
 			&shim.Column{Value: &shim.Column_String_{String_: customerId}},
 			&shim.Column{Value: &shim.Column_String_{String_: kycStatus}},
 			&shim.Column{Value: &shim.Column_String_{String_: lastUpdated}},
@@ -951,21 +957,70 @@ func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, error) {
 	var err error
 	// myLogger.Debugf("Get identification record for customer : [%s]", string(customerId))
 	var columns []shim.Column
-	col1 := shim.Column{Value: &shim.Column_String_{String_: customerId}}
+	col1 := shim.Column{Value: &shim.Column_String_{String_: dummyValue}}
+	col2 := shim.Column{Value: &shim.Column_String_{String_: customerId}}
 	columns = append(columns, col1)
+	columns = append(columns, col2)
 	row, err := stub.GetRow("KYC", columns)
 	if err != nil {
 		return "", fmt.Errorf("Failed retriving KYC details [%s]: [%s]", string(customerId), err)
 	}
-	jsonResp := "{\"customerId\":\"" + row.Columns[0].GetString_() + "\"" +
-		",\"kycStatus\":\"" + row.Columns[1].GetString_() + "\"" +
-		",\"lastUpdated\":\"" + row.Columns[2].GetString_() + "\"" +
-		",\"source\":\"" + row.Columns[3].GetString_() + "\"}"
+	jsonResp := "{\"customerId\":\"" + row.Columns[1].GetString_() + "\"" +
+		",\"kycStatus\":\"" + row.Columns[2].GetString_() + "\"" +
+		",\"lastUpdated\":\"" + row.Columns[3].GetString_() + "\"" +
+		",\"source\":\"" + row.Columns[4].GetString_() + "\"}"
 
 	return jsonResp, nil
 }
 
+func GetKYCStats(stub *shim.ChaincodeStub) (string, error) {
+	var err error
 
+	var columns []shim.Column
+	col1 := shim.Column{Value: &shim.Column_String_{String_: dummyValue}}
+	columns = append(columns, col1)
+	rows, err := GetAllRows(stub, "KYC", columns)
+	if err != nil {
+		return "",fmt.Errorf("Failed retriving KYC details [%s]", err)
+	}
+
+	var kycBuffer bytes.Buffer
+	var compliantBuffer bytes.Buffer
+	var noncompliantBuffer bytes.Buffer
+	var compliantCustomersCount int
+	var noncompliantCustomersCount int
+	var totalCustomers int
+
+	for i := range rows {
+		row := rows[i]
+		totalCustomers++;
+		if row.Columns[2].GetString_() == "compliant"{
+			compliantCustomersCount++
+			// if compliantBuffer.String() != "" {
+			// 	compliantBuffer.WriteString(",")
+			// }
+			// compliantBuffer.WriteString("{\"customerId\":\"" + row.Columns[1].GetString_() + "\"" +
+			// 	",\"kycStatus\":\"" + row.Columns[2].GetString_() + "\"" +
+			// 	",\"lastUpdated\":\"" + row.Columns[3].GetString_() + "\"" +
+			// 	",\"source\":\"" + row.Columns[4].GetString_() + "\"}")
+		}else if row.Columns[2].GetString_() == "non-compliant" {
+			noncompliantCustomersCount++
+		// 	if noncompliantBuffer.String() != "" {
+		// 		noncompliantBuffer.WriteString(",")
+		// 	}
+		// 	noncompliantBuffer.WriteString("{\"customerId\":\"" + row.Columns[1].GetString_() + "\"" +
+		// 		",\"kycStatus\":\"" + row.Columns[2].GetString_() + "\"" +
+		// 		",\"lastUpdated\":\"" + row.Columns[3].GetString_() + "\"" +
+		// 		",\"source\":\"" + row.Columns[4].GetString_() + "\"}")
+		}
+	}
+	kycBuffer.WriteString("{" +
+			"\"compliant : \"" + strconv.Itoa(compliantCustomersCount)+"\"," +
+			"\"noncompliant : \"" + strconv.Itoa(compliantCustomersCount) +"\"," +
+			"\"total : \"" + strconv.Itoa(totalCustomers) + "\"" +
+			"}")
+	return kycBuffer.String(), nil
+}
 
 func main() {
 	err := shim.Start(new(ServicesChaincode))
