@@ -99,7 +99,7 @@ func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	// fmt.Print(string(rec))
 	var rec string
 	rec = "{\"Identification\":[{\"CustomerId\":\"CUST00001\",\"IdentityNumber\":\"SGDIH8754L\",\"PoiType\":\"PAN\",\"PoiDoc\":\"someurl\",\"ExpiryDate\":\"01/01/2030\",\"Source\":\"HDFCBank\"}],\"PersonalDetails\":{\"CustomerId\":\"CUST00001\",\"FirstName\":\"Sachin\",\"LastName\":\"Prasad\",\"Sex\":\"Male\",\"EmailId\":\"saprasad@gmail.com\",\"Dob\":\"08/08/88\",\"PhoneNumber\":\"9648654973\",\"Occupation\":\"1\",\"AnnualIncome\":\"3\",\"IncomeSource\":\"2\",\"Source\":\"HDFCBank\"},\"KYC\":{\"CustomerId\":\"CUST00001\",\"KycStatus\":\"non-compliant\",\"LastUpdated\":\"10/08/2016\",\"Source\":\"HDFCBank\"},\"Address\":[{\"CustomerId\":\"CUST00001\",\"AddressId\":\"12345\",\"AddressType\":\"permanent\",\"DoorNumber\":\"#01\",\"Street\":\"Residencyroad\",\"Locality\":\"NearsuperMarket\",\"City\":\"Bangalore\",\"State\":\"Karnataka\",\"Pincode\":\"560107\",\"PoaType\":\"DrivingLicence\",\"PoaDoc\":\"someurl\",\"ExpiryDate\":\"01/01/2020\",\"Source\":\"HDFCBank\"},{\"CustomerId\":\"CUST00001\",\"AddressId\":\"addressID456\",\"AddressType\":\"communication\",\"DoorNumber\":\"#53\",\"Street\":\"Queensroad\",\"Locality\":\"NearBELcircle\",\"City\":\"Bangalore\",\"State\":\"Karnataka\",\"Pincode\":\"560119\",\"PoaType\":\"DrivingLicence\",\"PoaDoc\":\"someurl\",\"ExpiryDate\":\"01/01/2021\",\"Source\":\"HDFCBank\"}]}"
-	err := json.Unmarshal([]byte(rec)), &Cust)
+	err := json.Unmarshal([]byte(rec), &Cust)
 	if err != nil {
 		fmt.Println("Error is :",err)
 	}
