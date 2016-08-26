@@ -207,7 +207,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if function == "getCIAV" {
 		return t.getCIAV(stub, args)
-	}else function == "getCIAV" {
+	}else if function == "getCIAV" {
 		return t.GetAllKYC(stub, args)
 	}
 	return nil, errors.New("Received unknown function invocation")
