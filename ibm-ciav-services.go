@@ -89,8 +89,8 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
   Add Customer record
 */
 func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 2")
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
 	var Cust Customer
