@@ -208,7 +208,7 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 	if function == "getCIAV" {
 		return t.getCIAV(stub, args)
 	}else if function == "getCIAV" {
-		return t.GetAllKYC(stub, args)
+		return t.GetKYCStats(stub)
 	}
 	return nil, errors.New("Received unknown function invocation")
 }
@@ -973,7 +973,7 @@ func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, error) {
 	return jsonResp, nil
 }
 
-func GetKYCStats(stub *shim.ChaincodeStub) (string, error) {
+func (t *ServicesChaincode) GetKYCStats(stub *shim.ChaincodeStub) ([]byte, error) {
 	var err error
 
 	var columns []shim.Column
@@ -981,7 +981,7 @@ func GetKYCStats(stub *shim.ChaincodeStub) (string, error) {
 	columns = append(columns, col1)
 	rows, err := GetAllRows(stub, "KYC", columns)
 	if err != nil {
-		return "",fmt.Errorf("Failed retriving KYC details [%s]", err)
+		return nil,fmt.Errorf("Failed retriving KYC details [%s]", err)
 	}
 
 	var kycBuffer bytes.Buffer
@@ -1019,7 +1019,12 @@ func GetKYCStats(stub *shim.ChaincodeStub) (string, error) {
 			"\"noncompliant : \"" + strconv.Itoa(compliantCustomersCount) +"\"," +
 			"\"total : \"" + strconv.Itoa(totalCustomers) + "\"" +
 			"}")
-	return kycBuffer.String(), nil
+
+	bytes, err := json.Marshal(kycBuffer.String())
+	if err != nil {
+		return nil, errors.New("Error converting kyc stats")
+	}
+	return bytes, nil
 }
 
 func main() {
