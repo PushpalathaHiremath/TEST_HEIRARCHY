@@ -985,8 +985,8 @@ func (t *ServicesChaincode) GetKYCStats(stub *shim.ChaincodeStub) ([]byte, error
 	}
 
 	var kycBuffer bytes.Buffer
-	var compliantBuffer bytes.Buffer
-	var noncompliantBuffer bytes.Buffer
+	// var compliantBuffer bytes.Buffer
+	// var noncompliantBuffer bytes.Buffer
 	var compliantCustomersCount int
 	var noncompliantCustomersCount int
 	var totalCustomers int
