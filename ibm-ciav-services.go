@@ -21,6 +21,59 @@ var dummyValue = "99999"
 type ServicesChaincode struct {
 }
 
+type Identification struct {
+	CustomerId  	string
+	IdentityNumber  string
+	PoiType 				 string
+	PoiDoc          string
+	PoiExpiryDate  string
+	Source		   		 string
+}
+
+type PersonalDetails struct {
+	CustomerId  	   string
+	FirstName    	 string
+	LastName 			 string
+	Sex   					 string
+	EmailId         string
+	Dob              string
+	PhoneNumber     string
+	Occupation       string
+	AnnualIncome    string
+	IncomeSource    string
+	Source		   		 string
+}
+
+type Kyc struct {
+	CustomerId  	   string
+	KycStatus       string
+	LastUpdated     string
+	Source		   		 string
+}
+
+type Address struct {
+	CustomerId  	   string
+	AddressId       string
+	AddressType     string
+	DoorNumber      string
+	Street           string
+	Locality         string
+	City 						 string
+	State 					 string
+	Pincode          string
+	PoaType         string
+	PoaDoc          string
+	PoaExpiryDate  string
+	Source		   		 string
+}
+
+type Customer struct {
+		Identification    []Identification
+		PersonalDetails   PersonalDetails
+		Kyc								Kyc
+		Address					  []Address
+}
+
 /*
    Deploy KYC data model
 */
@@ -36,75 +89,106 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
   Add Customer record
 */
 func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	if len(args) != 43 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 43")
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 2")
 	}
+
+	var Cust Customer
+	// rec, err := ioutil.ReadFile("./config.json")
+	// rec := "{\"Identification\":[{\"customerId\":\"CUST001\",\"identityNumber\":\"SGDIH8754L\",\"poiType\":\"PAN\",\"poiDoc\":\"some url\",\"expiryDate\":\"01/01/2030\",\"source\":\"HDFC Bank\"},{\"customerId\":\"CUST001\",\"identityNumber\":\"Aadhar\",\"poiType\":\"1646-2648-277\",\"poiDoc\":\"some url\",\"expiryDate\":\"01/01/2000\",\"source\":\"HDFC Bank\"}],\"PersonalDetails\":{\"customerId\":\"CUST001\",\"firstName\":\"Sachin\",\"lastName\":\"Prasad\",\"sex\":\"Male\",\"emailId\":\"saprasad@gmail.com\",\"dob\":\"08/08/88\",\"phoneNumber\":\"9648654973\",\"occupation\":\"1\",\"annualIncome\":\"3\",\"incomeSource\":\"2\",\"source\":\"HDFC Bank\"},\"KYC\":{\"CustomerId\":\"CUST001\",\"KycStatus\":\"non-compliant\",\"LastUpdated\":\"10/08/2016\",\"source\":\"HDFC Bank\"},\"address\":[{\"customerId\":\"CUST001\",\"addressId\":\"12345\",\"addressType\":\"permanent\",\"doorNumber\":\"#01\",\"street\":\"Residency road\",\"locality\":\"Near super Market\",\"city\":\"Bangalore\",\"state\":\"Karnataka\",\"pincode\":\"560107\",\"poaType\":\"Driving Licence\",\"poaDoc\":\"some url\",\"expiryDate\":\"01/01/2020\",\"source\":\"HDFC Bank\"},{\"customerId\":\"CUST001\",\"addressId\":\"addressID456\",\"addressType\":\"communication\",\"doorNumber\":\"#53\",\"street\":\"Queens road\",\"locality\":\"Near BEL circle\",\"city\":\"Bangalore\",\"state\":\"Karnataka\",\"pincode\":\"560119\",\"poaType\":\"Driving Licence\",\"poaDoc\":\"some url\",\"expiryDate\":\"01/01/2021\",\"source\":\"HDFC Bank\"}]}"
+	// fmt.Print(string(rec))
+	err := json.Unmarshal([]byte(string(args[1])), &Cust)
+	if err != nil {
+		fmt.Println("Error is :",err)
+	}
+	// res := &Cust.Identification
+	// fmt.Println(len(Cust.Identification))
+	// res1B, _ := json.Marshal(res)
+	// fmt.Println(string(res1B))
+	// fmt.Println(string(res1B[0]))
+
+for i := range Cust.Identification {
+	AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
+		Cust.Identification[i].PoiExpiryDate, Cust.Identification[i].Source})
+}
+	// AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification.PoiType, Cust.Identification.PoiDoc, Cust.Identification.PoiExpiryDate, Cust.Identification.Source})
+	AddCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
+		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
+		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
+	AddKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source})
+for i := range Cust.Address {
+	AddAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
+		Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
+		Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].PoaExpiryDate, Cust.Address[i].Source})
+}
+
+
 	// Common
-	customer_id := args[0]
-	source := args[1]
+	// customer_id := args[0]
+	// source := args[1]
+	//
+	// // Identification
+	// identity_number := args[2]
+	// poi_type := args[3]
+	// poi_doc := args[4]
+	// poi_expiry_date := args[5]
+	//
+	// identity_number2 := args[28]
+	// poi_type2 := args[29]
+	// poi_doc2 := args[30]
+	// poi_expiry_date2 := args[31]
+	//
+	// // Customer personal details
+	// first_name := args[6]
+	// last_name := args[7]
+	// sex := args[8]
+	// email_id := args[9]
+	// dob := args[10]
+	// phone_number := args[11]
+	// occupation := args[12]
+	// annual_income := args[13]
+	// income_source := args[14]
+	//
+	// //kyc
+	// kyc_status := args[15]
+	// last_updated := args[16]
+	//
+	// // Address
+	// address_id := args[17]
+	// address_type := args[18]
+	// door_number := args[19]
+	// street := args[20]
+  // locality := args[21]
+	// city :=args[22]
+	// state := args[23]
+	// pincode := args[24]
+	// poa_type := args[25]
+	// poa_doc := args[26]
+	// poa_expiry_date := args[27]
+	//
+	// address_id2 := args[32]
+	// address_type2 := args[33]
+	// door_number2 := args[34]
+	// street2 := args[35]
+	// locality2 := args[36]
+	// city2 :=args[37]
+	// state2 := args[38]
+	// pincode2 := args[39]
+	// poa_type2 := args[40]
+	// poa_doc2 := args[41]
+	// poa_expiry_date2 := args[42]
 
-	// Identification
-	identity_number := args[2]
-	poi_type := args[3]
-	poi_doc := args[4]
-	poi_expiry_date := args[5]
-
-	identity_number2 := args[28]
-	poi_type2 := args[29]
-	poi_doc2 := args[30]
-	poi_expiry_date2 := args[31]
-
-	// Customer personal details
-	first_name := args[6]
-	last_name := args[7]
-	sex := args[8]
-	email_id := args[9]
-	dob := args[10]
-	phone_number := args[11]
-	occupation := args[12]
-	annual_income := args[13]
-	income_source := args[14]
-
-	//kyc
-	kyc_status := args[15]
-	last_updated := args[16]
-
-	// Address
-	address_id := args[17]
-	address_type := args[18]
-	door_number := args[19]
-	street := args[20]
-  locality := args[21]
-	city :=args[22]
-	state := args[23]
-	pincode := args[24]
-	poa_type := args[25]
-	poa_doc := args[26]
-	poa_expiry_date := args[27]
-
-	address_id2 := args[32]
-	address_type2 := args[33]
-	door_number2 := args[34]
-	street2 := args[35]
-	locality2 := args[36]
-	city2 :=args[37]
-	state2 := args[38]
-	pincode2 := args[39]
-	poa_type2 := args[40]
-	poa_doc2 := args[41]
-	poa_expiry_date2 := args[42]
-
-	AddIdentification(stub, []string{customer_id, identity_number, poi_type, poi_doc, poi_expiry_date, source})
-	AddCustomer(stub, []string{customer_id, first_name, last_name, sex, email_id, dob, phone_number, occupation, annual_income, income_source, source})
-	AddKYC(stub, []string{customer_id, kyc_status, last_updated, source})
-	AddAddress(stub, []string{customer_id, address_id, address_type, door_number, street, locality, city, state, pincode, poa_type, poa_doc, poa_expiry_date, source})
-
-	if args[28] != "" {
-		AddIdentification(stub, []string{customer_id, identity_number2, poi_type2, poi_doc2, poi_expiry_date2, source})
-	}
-	if args[32] != "" {
-		AddAddress(stub, []string{customer_id, address_id2, address_type2, door_number2, street2, locality2, city2, state2, pincode2, poa_type2, poa_doc2, poa_expiry_date2, source})
-	}
+	// AddIdentification(stub, []string{customer_id, identity_number, poi_type, poi_doc, poi_expiry_date, source})
+	// AddCustomer(stub, []string{customer_id, first_name, last_name, sex, email_id, dob, phone_number, occupation, annual_income, income_source, source})
+	// AddKYC(stub, []string{customer_id, kyc_status, last_updated, source})
+	// AddAddress(stub, []string{customer_id, address_id, address_type, door_number, street, locality, city, state, pincode, poa_type, poa_doc, poa_expiry_date, source})
+	//
+	// if args[28] != "" {
+	// 	AddIdentification(stub, []string{customer_id, identity_number2, poi_type2, poi_doc2, poi_expiry_date2, source})
+	// }
+	// if args[32] != "" {
+	// 	AddAddress(stub, []string{customer_id, address_id2, address_type2, door_number2, street2, locality2, city2, state2, pincode2, poa_type2, poa_doc2, poa_expiry_date2, source})
+	// }
 	return nil, nil
 }
 
