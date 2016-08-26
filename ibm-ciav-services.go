@@ -1016,7 +1016,7 @@ func (t *ServicesChaincode) GetKYCStats(stub *shim.ChaincodeStub) ([]byte, error
 	}
 	kycBuffer.WriteString("{" +
 			"\"compliant : \"" + strconv.Itoa(compliantCustomersCount)+"\"," +
-			"\"noncompliant : \"" + strconv.Itoa(compliantCustomersCount) +"\"," +
+			"\"noncompliant : \"" + strconv.Itoa(noncompliantCustomersCount) +"\"," +
 			"\"total : \"" + strconv.Itoa(totalCustomers) + "\"" +
 			"}")
 
