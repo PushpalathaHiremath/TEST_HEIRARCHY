@@ -16,7 +16,7 @@ import (
 	"strconv"
 )
 
-// var myLogger = logging.MustGetLogger("customer_address_details")
+var myLogger = logging.MustGetLogger("customer_address_details")
 var dummyValue = "99999"
 type ServicesChaincode struct {
 }
@@ -360,7 +360,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	Create address table
 */
 func CreateAddressTable(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	// myLogger.Debug("Creating Address Table ...")
+	myLogger.Debug("Creating Address Table ...")
 	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 0")
 	}
