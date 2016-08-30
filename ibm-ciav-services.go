@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	// "github.com/op/go-logging"
+	"github.com/op/go-logging"
 	"bytes"
 	"strings"
 	"strconv"
