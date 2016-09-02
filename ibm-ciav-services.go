@@ -94,26 +94,14 @@ func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	}
 
 	var Cust Customer
-	// rec, err := ioutil.ReadFile("./config.json")
-	// rec := "{\"Identification\":[{\"customerId\":\"CUST001\",\"identityNumber\":\"SGDIH8754L\",\"poiType\":\"PAN\",\"poiDoc\":\"some url\",\"expiryDate\":\"01/01/2030\",\"source\":\"HDFC Bank\"},{\"customerId\":\"CUST001\",\"identityNumber\":\"Aadhar\",\"poiType\":\"1646-2648-277\",\"poiDoc\":\"some url\",\"expiryDate\":\"01/01/2000\",\"source\":\"HDFC Bank\"}],\"PersonalDetails\":{\"customerId\":\"CUST001\",\"firstName\":\"Sachin\",\"lastName\":\"Prasad\",\"sex\":\"Male\",\"emailId\":\"saprasad@gmail.com\",\"dob\":\"08/08/88\",\"phoneNumber\":\"9648654973\",\"occupation\":\"1\",\"annualIncome\":\"3\",\"incomeSource\":\"2\",\"source\":\"HDFC Bank\"},\"KYC\":{\"CustomerId\":\"CUST001\",\"KycStatus\":\"non-compliant\",\"LastUpdated\":\"10/08/2016\",\"source\":\"HDFC Bank\"},\"address\":[{\"customerId\":\"CUST001\",\"addressId\":\"12345\",\"addressType\":\"permanent\",\"doorNumber\":\"#01\",\"street\":\"Residency road\",\"locality\":\"Near super Market\",\"city\":\"Bangalore\",\"state\":\"Karnataka\",\"pincode\":\"560107\",\"poaType\":\"Driving Licence\",\"poaDoc\":\"some url\",\"expiryDate\":\"01/01/2020\",\"source\":\"HDFC Bank\"},{\"customerId\":\"CUST001\",\"addressId\":\"addressID456\",\"addressType\":\"communication\",\"doorNumber\":\"#53\",\"street\":\"Queens road\",\"locality\":\"Near BEL circle\",\"city\":\"Bangalore\",\"state\":\"Karnataka\",\"pincode\":\"560119\",\"poaType\":\"Driving Licence\",\"poaDoc\":\"some url\",\"expiryDate\":\"01/01/2021\",\"source\":\"HDFC Bank\"}]}"
-	// fmt.Print(string(rec))
-	// var rec string
-	// rec = "{\"Identification\":[{\"CustomerId\":\"CUST00001\",\"IdentityNumber\":\"SGDIH8754L\",\"PoiType\":\"PAN\",\"PoiDoc\":\"someurl\",\"ExpiryDate\":\"01/01/2030\",\"Source\":\"HDFCBank\"}],\"PersonalDetails\":{\"CustomerId\":\"CUST00001\",\"FirstName\":\"Sachin\",\"LastName\":\"Prasad\",\"Sex\":\"Male\",\"EmailId\":\"saprasad@gmail.com\",\"Dob\":\"08/08/88\",\"PhoneNumber\":\"9648654973\",\"Occupation\":\"1\",\"AnnualIncome\":\"3\",\"IncomeSource\":\"2\",\"Source\":\"HDFCBank\"},\"KYC\":{\"CustomerId\":\"CUST00001\",\"KycStatus\":\"non-compliant\",\"LastUpdated\":\"10/08/2016\",\"Source\":\"HDFCBank\"},\"Address\":[{\"CustomerId\":\"CUST00001\",\"AddressId\":\"12345\",\"AddressType\":\"permanent\",\"DoorNumber\":\"#01\",\"Street\":\"Residencyroad\",\"Locality\":\"NearsuperMarket\",\"City\":\"Bangalore\",\"State\":\"Karnataka\",\"Pincode\":\"560107\",\"PoaType\":\"DrivingLicence\",\"PoaDoc\":\"someurl\",\"ExpiryDate\":\"01/01/2020\",\"Source\":\"HDFCBank\"},{\"CustomerId\":\"CUST00001\",\"AddressId\":\"addressID456\",\"AddressType\":\"communication\",\"DoorNumber\":\"#53\",\"Street\":\"Queensroad\",\"Locality\":\"NearBELcircle\",\"City\":\"Bangalore\",\"State\":\"Karnataka\",\"Pincode\":\"560119\",\"PoaType\":\"DrivingLicence\",\"PoaDoc\":\"someurl\",\"ExpiryDate\":\"01/01/2021\",\"Source\":\"HDFCBank\"}]}"
 	err := json.Unmarshal([]byte(string(args[0])), &Cust)
 	if err != nil {
 		fmt.Println("Error is :",err)
 	}
-	// res := &Cust.Identification
-	// fmt.Println(len(Cust.Identification))
-	// res1B, _ := json.Marshal(res)
-	// fmt.Println(string(res1B))
-	// fmt.Println(string(res1B[0]))
-
 for i := range Cust.Identification {
 	AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
 		Cust.Identification[i].PoiExpiryDate, Cust.Identification[i].Source})
 }
-	// AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification.PoiType, Cust.Identification.PoiDoc, Cust.Identification.PoiExpiryDate, Cust.Identification.Source})
 	AddCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
 		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
 		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
@@ -198,76 +186,101 @@ for i := range Cust.Address {
  Update customer record
 */
 func (t *ServicesChaincode) updateCIAV(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	if len(args) != 43 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 43")
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
-	// Common
-	customer_id := args[0]
-	source := args[1]
 
-	// Identification
-	identity_number := args[2]
-	poi_type := args[3]
-	poi_doc := args[4]
-	poi_expiry_date := args[5]
-
-	identity_number2 := args[28]
-	poi_type2 := args[29]
-	poi_doc2 := args[30]
-	poi_expiry_date2 := args[31]
-
-	// Customer personal details
-	first_name := args[6]
-	last_name := args[7]
-	sex := args[8]
-	email_id := args[9]
-	dob := args[10]
-	phone_number := args[11]
-	occupation := args[12]
-	annual_income := args[13]
-	income_source := args[14]
-
-	//kyc
-	kyc_status := args[15]
-	last_updated := args[16]
-
-	// Address
-	address_id := args[17]
-	address_type := args[18]
-	door_number := args[19]
-	street := args[20]
-	locality := args[21]
-	city := args[22]
-	state := args[23]
-	pincode := args[24]
-	poa_type := args[25]
-	poa_doc := args[26]
-	poa_expiry_date := args[27]
-
-	address_id2 := args[32]
-	address_type2 := args[33]
-	door_number2 := args[34]
-	street2 := args[35]
-	locality2 := args[36]
-	city2 :=args[37]
-	state2 := args[38]
-	pincode2 := args[39]
-	poa_type2 := args[40]
-	poa_doc2 := args[41]
-	poa_expiry_date2 := args[42]
-
-	UpdateIdentification(stub, []string{customer_id, identity_number, poi_type, poi_doc, poi_expiry_date, source})
-	UpdateCustomer(stub, []string{customer_id, first_name, last_name, sex, email_id, dob, phone_number, occupation, annual_income, income_source, source})
-	UpdateKYC(stub, []string{customer_id, kyc_status, last_updated, source})
-	UpdateAddress(stub, []string{customer_id, address_id, address_type, door_number, street, locality, city, state, pincode, poa_type, poa_doc, poa_expiry_date, source})
-
-
-	if args[28] != "" {
-		UpdateIdentification(stub, []string{customer_id, identity_number2, poi_type2, poi_doc2, poi_expiry_date2, source})
+	var Cust Customer
+	err := json.Unmarshal([]byte(string(args[0])), &Cust)
+	if err != nil {
+		fmt.Println("Error is :",err)
 	}
-	if args[32] != "" {
-		UpdateAddress(stub, []string{customer_id, address_id2, address_type2, door_number2, street2, locality2, city2, state2, pincode2, poa_type2, poa_doc2, poa_expiry_date2, source})
-	}
+for i := range Cust.Identification {
+	UpdateIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
+		Cust.Identification[i].PoiExpiryDate, Cust.Identification[i].Source})
+}
+	UpdateCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
+		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
+		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
+	UpdateKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source})
+for i := range Cust.Address {
+	UpdateAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
+		Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
+		Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].PoaExpiryDate, Cust.Address[i].Source})
+}
+
+
+
+	// if len(args) != 43 {
+	// 	return nil, errors.New("Incorrect number of arguments. Expecting 43")
+	// }
+	// // Common
+	// customer_id := args[0]
+	// source := args[1]
+	//
+	// // Identification
+	// identity_number := args[2]
+	// poi_type := args[3]
+	// poi_doc := args[4]
+	// poi_expiry_date := args[5]
+	//
+	// identity_number2 := args[28]
+	// poi_type2 := args[29]
+	// poi_doc2 := args[30]
+	// poi_expiry_date2 := args[31]
+	//
+	// // Customer personal details
+	// first_name := args[6]
+	// last_name := args[7]
+	// sex := args[8]
+	// email_id := args[9]
+	// dob := args[10]
+	// phone_number := args[11]
+	// occupation := args[12]
+	// annual_income := args[13]
+	// income_source := args[14]
+	//
+	// //kyc
+	// kyc_status := args[15]
+	// last_updated := args[16]
+	//
+	// // Address
+	// address_id := args[17]
+	// address_type := args[18]
+	// door_number := args[19]
+	// street := args[20]
+	// locality := args[21]
+	// city := args[22]
+	// state := args[23]
+	// pincode := args[24]
+	// poa_type := args[25]
+	// poa_doc := args[26]
+	// poa_expiry_date := args[27]
+	//
+	// address_id2 := args[32]
+	// address_type2 := args[33]
+	// door_number2 := args[34]
+	// street2 := args[35]
+	// locality2 := args[36]
+	// city2 :=args[37]
+	// state2 := args[38]
+	// pincode2 := args[39]
+	// poa_type2 := args[40]
+	// poa_doc2 := args[41]
+	// poa_expiry_date2 := args[42]
+	//
+	// UpdateIdentification(stub, []string{customer_id, identity_number, poi_type, poi_doc, poi_expiry_date, source})
+	// UpdateCustomer(stub, []string{customer_id, first_name, last_name, sex, email_id, dob, phone_number, occupation, annual_income, income_source, source})
+	// UpdateKYC(stub, []string{customer_id, kyc_status, last_updated, source})
+	// UpdateAddress(stub, []string{customer_id, address_id, address_type, door_number, street, locality, city, state, pincode, poa_type, poa_doc, poa_expiry_date, source})
+	//
+	//
+	// if args[28] != "" {
+	// 	UpdateIdentification(stub, []string{customer_id, identity_number2, poi_type2, poi_doc2, poi_expiry_date2, source})
+	// }
+	// if args[32] != "" {
+	// 	UpdateAddress(stub, []string{customer_id, address_id2, address_type2, door_number2, street2, locality2, city2, state2, pincode2, poa_type2, poa_doc2, poa_expiry_date2, source})
+	// }
 	return nil, nil
 }
 
