@@ -846,7 +846,8 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 
 	// myLogger.Debugf("Updating identity : [%s] ", poiType)
 
-	isOk, _ := stub.VerifyAttribute("role", []byte("Helpdesk")){
+	isOk, _ := stub.VerifyAttribute("role", []byte("Helpdesk"))
+	if isOk {
 		identificationStr, err := GetIdentification(stub, customerId)
 		var identification Identification
 		err = json.Unmarshal([]byte(string(identificationStr)), &identification)
