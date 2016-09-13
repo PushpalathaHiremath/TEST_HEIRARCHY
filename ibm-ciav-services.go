@@ -1119,6 +1119,8 @@ func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, error) {
 	if isOk {
 		jsonResp = jsonResp + ",\"riskLevel\":\"" + row.Columns[4].GetString_() + "\""
 	}
+	callerRole, _ := stub.ReadCertAttribute("role")
+	jsonResp = jsonResp + ",\"role\":\"" + callerRole + "\""
 	jsonResp = jsonResp + ",\"source\":\"" + row.Columns[5].GetString_() + "\"}"
 
 	return jsonResp, nil
