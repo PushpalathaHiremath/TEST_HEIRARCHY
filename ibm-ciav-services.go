@@ -853,11 +853,11 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 
 	if isOk {
 		identificationStr, _ := GetIdentification(stub, args[0])
-		identificationStr = strings.Replace(identificationStr, "[[", "[", -1)
-		identificationStr = strings.Replace(identificationStr, "]]", "]", -1)
-		myLogger.Debugf("identificationStr : [%s] ", identificationStr)
+		identificationStr1 := strings.Replace(identificationStr, "[[", "[", -1)
+		identificationStr1 = strings.Replace(identificationStr1, "]]", "]", -1)
+		myLogger.Debugf("identificationStr1 : [%s] ", identificationStr1)
 		var identification []Identification
-		err := json.Unmarshal([]byte(string(identificationStr)), &identification)
+		err := json.Unmarshal([]byte(string(identificationStr1)), &identification)
 		if err == nil {
 			return nil, errors.New("Error in getting Identification record.")
 		}
