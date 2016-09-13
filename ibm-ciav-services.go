@@ -931,12 +931,12 @@ func GetIdentification(stub *shim.ChaincodeStub, customerId string) (string, err
 		if i != 0 {
 			jsonRespBuffer.WriteString(",")
 		}
-		jsonRespBuffer.WriteString("{\"customerId\":\"" + row.Columns[0].GetString_() + "\"" +
-			",\"identityNumber\":\"" + row.Columns[1].GetString_() + "\"" +
-			",\"poiType\":\"" + row.Columns[2].GetString_() + "\"" +
-			",\"poiDoc\":\"" + row.Columns[3].GetString_() + "\"" +
-			",\"expiryDate\":\"" + row.Columns[4].GetString_() + "\"" +
-			",\"source\":\"" + row.Columns[5].GetString_() + "\"}")
+		jsonRespBuffer.WriteString("{\"CustomerId\":\"" + row.Columns[0].GetString_() + "\"" +
+			",\"IdentityNumber\":\"" + row.Columns[1].GetString_() + "\"" +
+			",\"PoiType\":\"" + row.Columns[2].GetString_() + "\"" +
+			",\"PoiDoc\":\"" + row.Columns[3].GetString_() + "\"" +
+			",\"PoiExpiryDate\":\"" + row.Columns[4].GetString_() + "\"" +
+			",\"Source\":\"" + row.Columns[5].GetString_() + "\"}")
 	}
 	jsonRespBuffer.WriteString("]")
 
