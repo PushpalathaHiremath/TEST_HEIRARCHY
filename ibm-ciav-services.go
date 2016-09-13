@@ -856,7 +856,7 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 	  identityNumber = identification.IdentityNumber
 	 	poiType = args[2]
 	 	poiDoc = args[3]
-	 	expiryDate = identification.ExpiryDate
+	 	expiryDate = identification.PoiExpiryDate
 	 	source = args[5]
 	}else{
 		customerId = args[0]
