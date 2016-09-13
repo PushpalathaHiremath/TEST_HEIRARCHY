@@ -10,13 +10,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-//	"github.com/op/go-logging"
+	"github.com/op/go-logging"
 	"bytes"
 	"strings"
 	"strconv"
 )
 
-// var myLogger = logging.MustGetLogger("customer_address_details")
+var myLogger = logging.MustGetLogger("customer_address_details")
 var dummyValue = "99999"
 type ServicesChaincode struct {
 }
@@ -844,11 +844,12 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 	var expiryDate string
 	var source string
 
-	// myLogger.Debugf("Updating identity : [%s] ", poiType)
+	myLogger.Debugf("Updating identity : [%s] ", poiType)
 
 	isOk, _ := stub.VerifyAttribute("role", []byte("Helpdesk"))
 	if isOk {
 		identificationStr, _ := GetIdentification(stub, customerId)
+		myLogger.Debugf("identificationStr : [%s] ", identificationStr)
 		var identification Identification
 		err := json.Unmarshal([]byte(string(identificationStr)), &identification)
 		if err == nil {
@@ -868,6 +869,8 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 		expiryDate = args[4]
 		source = args[5]
 	}
+	myLogger.Debugf("customerId : [%s] ", customerId)
+
 	ok, err := stub.ReplaceRow("Identification", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: customerId}},
