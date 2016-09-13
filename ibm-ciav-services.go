@@ -82,9 +82,9 @@ type Customer struct {
 // }
 
 	// var	Superadmin    []string{""}
-	var	Manager    []string{""}
-	var	RelationalManager    []string
-	var	Helpdesk    []string
+	// var	Manager    []string{""}
+	// var	RelationalManager    []string
+	// var	Helpdesk    []string
 
 /*
    Deploy KYC data model
