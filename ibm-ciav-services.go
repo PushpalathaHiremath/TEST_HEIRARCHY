@@ -847,6 +847,10 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 	myLogger.Debugf("Updating identity : [%s] ", poiType)
 
 	isOk, _ := stub.VerifyAttribute("role", []byte("Helpdesk"))
+
+	callerRole, _ := stub.ReadCertAttribute("role")
+	myLogger.Debugf("caller role : [%s] ", string(callerRole))
+
 	if isOk {
 		identificationStr, _ := GetIdentification(stub, customerId)
 		myLogger.Debugf("identificationStr : [%s] ", identificationStr)
@@ -870,6 +874,11 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 		source = args[5]
 	}
 	myLogger.Debugf("customerId : [%s] ", customerId)
+	myLogger.Debugf("identityNumber : [%s] ", identityNumber)
+	myLogger.Debugf("poiType : [%s] ", poiType)
+	myLogger.Debugf("poiDoc : [%s] ", poiDoc)
+	myLogger.Debugf("expiryDate : [%s] ", expiryDate)
+	myLogger.Debugf("source : [%s] ", source)
 
 	ok, err := stub.ReplaceRow("Identification", shim.Row{
 		Columns: []*shim.Column{
@@ -1122,8 +1131,8 @@ func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, error) {
 	if isOk {
 		jsonResp = jsonResp + ",\"riskLevel\":\"" + row.Columns[4].GetString_() + "\""
 	}
-	callerRole, _ := stub.ReadCertAttribute("role")
-	jsonResp = jsonResp + ",\"role\":\"" + string(callerRole) + "\""
+	// callerRole, _ := stub.ReadCertAttribute("role")
+	// jsonResp = jsonResp + ",\"role\":\"" + string(callerRole) + "\""
 	jsonResp = jsonResp + ",\"source\":\"" + row.Columns[5].GetString_() + "\"}"
 
 	return jsonResp, nil
