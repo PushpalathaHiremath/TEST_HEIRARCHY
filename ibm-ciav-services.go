@@ -729,17 +729,17 @@ func GetCustomer(stub *shim.ChaincodeStub, customerId string) (string, error) {
 		return "", fmt.Errorf("Failed retriving Customer details [%s]: [%s]", string(customerId), err)
 	}
 
-	jsonResp := "{\"customerId\":\"" + row.Columns[0].GetString_() + "\""
-							+ ",\"firstName\":\"" + row.Columns[1].GetString_() + "\""
- 							+ ",\"lastName\":\"" + row.Columns[2].GetString_() + "\""
-							+ ",\"sex\":\"" + row.Columns[3].GetString_() + "\""
-	  				  + ",\"emailId\":\"" + row.Columns[4].GetString_() + "\""
-							+ ",\"dob\":\"" + row.Columns[5].GetString_() + "\""
-							+	",\"phoneNumber\":\"" + row.Columns[6].GetString_() + "\""
-		 				  + ",\"occupation\":\"" + row.Columns[7].GetString_() + "\""
-							+ ",\"annualIncome\":\"" + row.Columns[8].GetString_() + "\""
-							+ ",\"incomeSource\":\"" + row.Columns[9].GetString_() + "\""
-							+ ",\"source\":\"" + row.Columns[10].GetString_() + "\"}"
+	jsonResp := "{\"customerId\":\"" + row.Columns[0].GetString_() + "\"" +
+							",\"firstName\":\"" + row.Columns[1].GetString_() + "\"" +
+ 							",\"lastName\":\"" + row.Columns[2].GetString_() + "\"" +
+							",\"sex\":\"" + row.Columns[3].GetString_() + "\"" +
+	  				  ",\"emailId\":\"" + row.Columns[4].GetString_() + "\"" +
+							",\"dob\":\"" + row.Columns[5].GetString_() + "\"" +
+							",\"phoneNumber\":\"" + row.Columns[6].GetString_() + "\"" +
+		 				  ",\"occupation\":\"" + row.Columns[7].GetString_() + "\"" +
+							",\"annualIncome\":\"" + row.Columns[8].GetString_() + "\"" +
+							",\"incomeSource\":\"" + row.Columns[9].GetString_() + "\"" +
+							",\"source\":\"" + row.Columns[10].GetString_() + "\"}"
 	return jsonResp, nil
 }
 
