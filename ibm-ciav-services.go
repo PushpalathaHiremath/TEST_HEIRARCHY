@@ -852,12 +852,12 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 		var identification Identification
 		err = json.Unmarshal([]byte(string(identificationStr)), &identification)
 
-		customerId := identification.CustomerId
-	  identityNumber := identification.identityNumber
-	 	poiType := args[2]
-	 	poiDoc := args[3]
-	 	expiryDate := identification.ExpiryDate
-	 	source := args[5]
+		customerId = identification.CustomerId
+	  identityNumber = identification.IdentityNumber
+	 	poiType = args[2]
+	 	poiDoc = args[3]
+	 	expiryDate = identification.ExpiryDate
+	 	source = args[5]
 	}else{
 		customerId = args[0]
 		identityNumber = args[1]
