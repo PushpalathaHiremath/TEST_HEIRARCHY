@@ -854,16 +854,16 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 	if isOk {
 		identificationStr, _ := GetIdentification(stub, args[0])
 		myLogger.Debugf("identificationStr : [%s] ", identificationStr)
-		var identification Identification
+		var identification []Identification
 		err := json.Unmarshal([]byte(string(identificationStr)), &identification)
 		if err == nil {
 			return nil, errors.New("Error in getting Identification record.")
 		}
-		customerId = identification.CustomerId
-	  identityNumber = identification.IdentityNumber
+		customerId = identification[0].CustomerId
+	  identityNumber = identification[0].IdentityNumber
 	 	poiType = args[2]
 	 	poiDoc = args[3]
-	 	expiryDate = identification.PoiExpiryDate
+	 	expiryDate = identification[0].PoiExpiryDate
 	 	source = args[5]
 	}else{
 		customerId = args[0]
