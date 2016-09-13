@@ -853,6 +853,8 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 
 	if isOk {
 		identificationStr, _ := GetIdentification(stub, args[0])
+		identificationStr = strings.Replace(identificationStr, "[[", "[", -1)
+		identificationStr = strings.Replace(identificationStr, "]]", "]", -1)
 		myLogger.Debugf("identificationStr : [%s] ", identificationStr)
 		var identification []Identification
 		err := json.Unmarshal([]byte(string(identificationStr)), &identification)
@@ -923,7 +925,7 @@ func GetIdentification(stub *shim.ChaincodeStub, customerId string) (string, err
 	}
 
 	var jsonRespBuffer bytes.Buffer
-	// jsonRespBuffer.WriteString("[")
+	jsonRespBuffer.WriteString("[")
 	for i := range rows {
 		row := rows[i]
 		// myLogger.Debugf("Identification rows [%s], is : [%s]", i, row)
@@ -938,8 +940,8 @@ func GetIdentification(stub *shim.ChaincodeStub, customerId string) (string, err
 			",\"PoiExpiryDate\":\"" + row.Columns[4].GetString_() + "\"" +
 			",\"Source\":\"" + row.Columns[5].GetString_() + "\"}")
 	}
-	// jsonRespBuffer.WriteString("]")
-
+	jsonRespBuffer.WriteString("]")
+	myLogger.Debugf("Id Arr : [%s] ", jsonRespBuffer.String())
 	return jsonRespBuffer.String(), nil
 }
 
