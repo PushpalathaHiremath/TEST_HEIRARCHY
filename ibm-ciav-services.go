@@ -850,8 +850,10 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 	if isOk {
 		identificationStr, _ := GetIdentification(stub, customerId)
 		var identification Identification
-		err = json.Unmarshal([]byte(string(identificationStr)), &identification)
-
+		err := json.Unmarshal([]byte(string(identificationStr)), &identification)
+		if err == nil {
+			return nil, errors.New("Error in getting Identification record.")
+		}
 		customerId = identification.CustomerId
 	  identityNumber = identification.IdentityNumber
 	 	poiType = args[2]
