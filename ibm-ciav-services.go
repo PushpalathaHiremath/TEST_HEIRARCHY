@@ -74,6 +74,18 @@ type Customer struct {
 		Address					  []Address
 }
 
+// type AccessControl struct {
+// 		Superadmin    []string
+// 		Manager    []string
+// 		RelationalManager    []string
+// 		Helpdesk    []string
+// }
+
+	// var	Superadmin    []string{""}
+	var	Manager    []string{""}
+	var	RelationalManager    []string
+	var	Helpdesk    []string
+
 /*
    Deploy KYC data model
 */
@@ -82,6 +94,10 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 	CreateCustomerTable(stub, args)
 	CreateKycTable(stub, args)
 	CreateAddressTable(stub, args)
+
+
+
+
 	return nil, nil
 }
 
@@ -186,100 +202,100 @@ for i := range Cust.Address {
  Update customer record
 */
 func (t *ServicesChaincode) updateCIAV(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-// 	if len(args) != 1 {
-// 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
-// 	}
-//
-// 	var Cust Customer
-// 	err := json.Unmarshal([]byte(string(args[0])), &Cust)
-// 	if err != nil {
-// 		fmt.Println("Error is :",err)
-// 	}
-// for i := range Cust.Identification {
-// 	UpdateIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
-// 		Cust.Identification[i].PoiExpiryDate, Cust.Identification[i].Source})
-// }
-// 	UpdateCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
-// 		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
-// 		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
-// 	UpdateKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source})
-// for i := range Cust.Address {
-// 	UpdateAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
-// 		Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
-// 		Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].PoaExpiryDate, Cust.Address[i].Source})
-// }
-//
-
-
-	if len(args) != 43 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 43")
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
-	// Common
-	customer_id := args[0]
-	source := args[1]
 
-	// Identification
-	identity_number := args[2]
-	poi_type := args[3]
-	poi_doc := args[4]
-	poi_expiry_date := args[5]
-
-	identity_number2 := args[28]
-	poi_type2 := args[29]
-	poi_doc2 := args[30]
-	poi_expiry_date2 := args[31]
-
-	// Customer personal details
-	first_name := args[6]
-	last_name := args[7]
-	sex := args[8]
-	email_id := args[9]
-	dob := args[10]
-	phone_number := args[11]
-	occupation := args[12]
-	annual_income := args[13]
-	income_source := args[14]
-
-	//kyc
-	kyc_status := args[15]
-	last_updated := args[16]
-
-	// Address
-	address_id := args[17]
-	address_type := args[18]
-	door_number := args[19]
-	street := args[20]
-	locality := args[21]
-	city := args[22]
-	state := args[23]
-	pincode := args[24]
-	poa_type := args[25]
-	poa_doc := args[26]
-	poa_expiry_date := args[27]
-
-	address_id2 := args[32]
-	address_type2 := args[33]
-	door_number2 := args[34]
-	street2 := args[35]
-	locality2 := args[36]
-	city2 :=args[37]
-	state2 := args[38]
-	pincode2 := args[39]
-	poa_type2 := args[40]
-	poa_doc2 := args[41]
-	poa_expiry_date2 := args[42]
-
-	UpdateIdentification(stub, []string{customer_id, identity_number, poi_type, poi_doc, poi_expiry_date, source})
-	UpdateCustomer(stub, []string{customer_id, first_name, last_name, sex, email_id, dob, phone_number, occupation, annual_income, income_source, source})
-	UpdateKYC(stub, []string{customer_id, kyc_status, last_updated, source})
-	UpdateAddress(stub, []string{customer_id, address_id, address_type, door_number, street, locality, city, state, pincode, poa_type, poa_doc, poa_expiry_date, source})
-
-	if args[28] != "" {
-		UpdateIdentification(stub, []string{customer_id, identity_number2, poi_type2, poi_doc2, poi_expiry_date2, source})
+	var Cust Customer
+	err := json.Unmarshal([]byte(string(args[0])), &Cust)
+	if err != nil {
+		fmt.Println("Error is :",err)
 	}
-	if args[32] != "" {
-		UpdateAddress(stub, []string{customer_id, address_id2, address_type2, door_number2, street2, locality2, city2, state2, pincode2, poa_type2, poa_doc2, poa_expiry_date2, source})
-	}
+for i := range Cust.Identification {
+	UpdateIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
+		Cust.Identification[i].PoiExpiryDate, Cust.Identification[i].Source})
+}
+	UpdateCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
+		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
+		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
+	UpdateKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source})
+for i := range Cust.Address {
+	UpdateAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
+		Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
+		Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].PoaExpiryDate, Cust.Address[i].Source})
+}
+
+
+
+	// if len(args) != 43 {
+	// 	return nil, errors.New("Incorrect number of arguments. Expecting 43")
+	// }
+	// // Common
+	// customer_id := args[0]
+	// source := args[1]
+	//
+	// // Identification
+	// identity_number := args[2]
+	// poi_type := args[3]
+	// poi_doc := args[4]
+	// poi_expiry_date := args[5]
+	//
+	// identity_number2 := args[28]
+	// poi_type2 := args[29]
+	// poi_doc2 := args[30]
+	// poi_expiry_date2 := args[31]
+	//
+	// // Customer personal details
+	// first_name := args[6]
+	// last_name := args[7]
+	// sex := args[8]
+	// email_id := args[9]
+	// dob := args[10]
+	// phone_number := args[11]
+	// occupation := args[12]
+	// annual_income := args[13]
+	// income_source := args[14]
+	//
+	// //kyc
+	// kyc_status := args[15]
+	// last_updated := args[16]
+	//
+	// // Address
+	// address_id := args[17]
+	// address_type := args[18]
+	// door_number := args[19]
+	// street := args[20]
+	// locality := args[21]
+	// city := args[22]
+	// state := args[23]
+	// pincode := args[24]
+	// poa_type := args[25]
+	// poa_doc := args[26]
+	// poa_expiry_date := args[27]
+	//
+	// address_id2 := args[32]
+	// address_type2 := args[33]
+	// door_number2 := args[34]
+	// street2 := args[35]
+	// locality2 := args[36]
+	// city2 :=args[37]
+	// state2 := args[38]
+	// pincode2 := args[39]
+	// poa_type2 := args[40]
+	// poa_doc2 := args[41]
+	// poa_expiry_date2 := args[42]
+	//
+	// UpdateIdentification(stub, []string{customer_id, identity_number, poi_type, poi_doc, poi_expiry_date, source})
+	// UpdateCustomer(stub, []string{customer_id, first_name, last_name, sex, email_id, dob, phone_number, occupation, annual_income, income_source, source})
+	// UpdateKYC(stub, []string{customer_id, kyc_status, last_updated, source})
+	// UpdateAddress(stub, []string{customer_id, address_id, address_type, door_number, street, locality, city, state, pincode, poa_type, poa_doc, poa_expiry_date, source})
+	//
+	// if args[28] != "" {
+	// 	UpdateIdentification(stub, []string{customer_id, identity_number2, poi_type2, poi_doc2, poi_expiry_date2, source})
+	// }
+	// if args[32] != "" {
+	// 	UpdateAddress(stub, []string{customer_id, address_id2, address_type2, door_number2, street2, locality2, city2, state2, pincode2, poa_type2, poa_doc2, poa_expiry_date2, source})
+	// }
 	return nil, nil
 }
 
@@ -713,17 +729,17 @@ func GetCustomer(stub *shim.ChaincodeStub, customerId string) (string, error) {
 		return "", fmt.Errorf("Failed retriving Customer details [%s]: [%s]", string(customerId), err)
 	}
 
-	jsonResp := "{\"customerId\":\"" + row.Columns[0].GetString_() + "\"" +
-		",\"firstName\":\"" + row.Columns[1].GetString_() + "\"" +
-		",\"lastName\":\"" + row.Columns[2].GetString_() + "\"" +
-		",\"sex\":\"" + row.Columns[3].GetString_() + "\"" +
-		",\"emailId\":\"" + row.Columns[4].GetString_() + "\"" +
-		",\"dob\":\"" + row.Columns[5].GetString_() + "\"" +
-		",\"phoneNumber\":\"" + row.Columns[6].GetString_() + "\"" +
-		",\"occupation\":\"" + row.Columns[7].GetString_() + "\"" +
-		",\"annualIncome\":\"" + row.Columns[8].GetString_() + "\"" +
-		",\"incomeSource\":\"" + row.Columns[9].GetString_() + "\"" +
-		",\"source\":\"" + row.Columns[10].GetString_() + "\"}"
+	jsonResp := "{\"customerId\":\"" + row.Columns[0].GetString_() + "\""
+							+ ",\"firstName\":\"" + row.Columns[1].GetString_() + "\""
+ 							+ ",\"lastName\":\"" + row.Columns[2].GetString_() + "\""
+							+ ",\"sex\":\"" + row.Columns[3].GetString_() + "\""
+	  				  + ",\"emailId\":\"" + row.Columns[4].GetString_() + "\""
+							+ ",\"dob\":\"" + row.Columns[5].GetString_() + "\""
+							+	",\"phoneNumber\":\"" + row.Columns[6].GetString_() + "\""
+		 				  + ",\"occupation\":\"" + row.Columns[7].GetString_() + "\""
+							+ ",\"annualIncome\":\"" + row.Columns[8].GetString_() + "\""
+							+ ",\"incomeSource\":\"" + row.Columns[9].GetString_() + "\""
+							+ ",\"source\":\"" + row.Columns[10].GetString_() + "\"}"
 	return jsonResp, nil
 }
 
@@ -814,15 +830,41 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 		return nil, errors.New("Incorrect number of arguments. Expecting 6")
 	}
 
-	customerId := args[0]
-	identityNumber := args[1]
-	poiType := args[2]
-	poiDoc := args[3]
-	expiryDate := args[4]
-	source := args[5]
+	// customerId := args[0]
+	// identityNumber := args[1]
+	// poiType := args[2]
+	// poiDoc := args[3]
+	// expiryDate := args[4]
+	// source := args[5]
+
+	var customerId string
+	var identityNumber string
+	var poiType string
+	var poiDoc string
+	var expiryDate string
+	var source string
 
 	// myLogger.Debugf("Updating identity : [%s] ", poiType)
 
+	isOk, _ := stub.VerifyAttribute("role", []byte("Helpdesk")){
+		identificationStr, err := GetIdentification(stub, customerId)
+		var identification Identification
+		err = json.Unmarshal([]byte(string(identificationStr)), &identification)
+
+		customerId := identification.CustomerId
+	  identityNumber := identification.identityNumber
+	 	poiType := args[2]
+	 	poiDoc := args[3]
+	 	expiryDate := identification.ExpiryDate
+	 	source := args[5]
+	}else{
+		customerId = args[0]
+		identityNumber = args[1]
+		poiType = args[2]
+		poiDoc = args[3]
+		expiryDate = args[4]
+		source = args[5]
+	}
 	ok, err := stub.ReplaceRow("Identification", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: customerId}},
@@ -971,10 +1013,11 @@ func CreateKycTable(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	}
 
 	err := stub.CreateTable("KYC", []*shim.ColumnDefinition{
-		&shim.ColumnDefinition{Name: "cummy", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "dummy", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "customerId", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "kycStatus", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "lastUpdated", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "riskLevel", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "source", Type: shim.ColumnDefinition_STRING, Key: false},
 	})
 	if err != nil {
@@ -1005,6 +1048,7 @@ func AddKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 			&shim.Column{Value: &shim.Column_String_{String_: customerId}},
 			&shim.Column{Value: &shim.Column_String_{String_: kycStatus}},
 			&shim.Column{Value: &shim.Column_String_{String_: lastUpdated}},
+			&shim.Column{Value: &shim.Column_String_{String_: "2"}},
 			&shim.Column{Value: &shim.Column_String_{String_: source}},
 		},
 	})
@@ -1037,6 +1081,7 @@ func UpdateKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 			&shim.Column{Value: &shim.Column_String_{String_: customerId}},
 			&shim.Column{Value: &shim.Column_String_{String_: kycStatus}},
 			&shim.Column{Value: &shim.Column_String_{String_: lastUpdated}},
+			&shim.Column{Value: &shim.Column_String_{String_: "2"}},
 			&shim.Column{Value: &shim.Column_String_{String_: source}},
 		},
 	})
@@ -1065,8 +1110,13 @@ func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, error) {
 	}
 	jsonResp := "{\"customerId\":\"" + row.Columns[1].GetString_() + "\"" +
 		",\"kycStatus\":\"" + row.Columns[2].GetString_() + "\"" +
-		",\"lastUpdated\":\"" + row.Columns[3].GetString_() + "\"" +
-		",\"source\":\"" + row.Columns[4].GetString_() + "\"}"
+		",\"lastUpdated\":\"" + row.Columns[3].GetString_() + "\""
+
+	isOk, _ := stub.VerifyAttribute("role", []byte("Superadmin"))
+	if isOk {
+		jsonResp = jsonResp + ",\"riskLevel\":\"" + row.Columns[4].GetString_() + "\""
+	}
+	jsonResp = jsonResp + ",\"source\":\"" + row.Columns[5].GetString_() + "\"}"
 
 	return jsonResp, nil
 }
