@@ -213,9 +213,9 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	} else {
 		return nil, errors.New("Invalid arguments. Please query by CUST_ID or PAN")
 	}
-
+	callerRole, _ := stub.ReadCertAttribute("role")
 	responseStr := "{\"data\":" + jsonResp + "," +
-		"\"visibility\":" + ciav.GetVisibility() +
+		"\"visibility\":" + ciav.GetVisibility(string(callerRole)) +
 		"}"
 	bytes, err := json.Marshal(responseStr)
 	if err != nil {
