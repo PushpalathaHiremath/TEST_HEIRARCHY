@@ -1,7 +1,6 @@
 package ROV_CIAV
 
 import (
-	"errors"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/op/go-logging"
 )
