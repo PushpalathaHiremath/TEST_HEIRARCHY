@@ -55,8 +55,8 @@ func CreateAddressTable(stub *shim.ChaincodeStub, args []string) ([]byte, error)
 func AddAddress(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	// myLogger.Debug("Adding Address record ...")
 
-	if len(args) != 13 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 13")
+	if len(args) != 12 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 12")
 	}
 	customerId := args[0]
 	addressId := args[1]
@@ -98,8 +98,8 @@ func AddAddress(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 func UpdateAddress(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	// myLogger.Debug("Updating address record ...")
 
-	if len(args) != 13 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 11")
+	if len(args) != 12 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 12")
 	}
 
 	customerId := args[0]

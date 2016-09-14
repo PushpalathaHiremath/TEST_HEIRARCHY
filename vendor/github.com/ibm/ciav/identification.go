@@ -67,8 +67,8 @@ func CreateIdentificationTable(stub *shim.ChaincodeStub, args []string) ([]byte,
 */
 func AddIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	// myLogger.Debug("Add Identification record ...")
-	if len(args) != 6 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 6")
+	if len(args) != 5 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 5")
 	}
 
 	customerId := args[0]
@@ -105,8 +105,8 @@ func AddIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, error) 
 func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	// myLogger.Debug("Update Identification record ...")
 
-	if len(args) != 6 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 6")
+	if len(args) != 5 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 5")
 	}
 
 	// customerId := args[0]
