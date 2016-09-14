@@ -8,6 +8,7 @@ package ciav
 import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"strings"
 )
 
 var Superadmin map[string]string
