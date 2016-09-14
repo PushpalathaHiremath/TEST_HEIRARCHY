@@ -162,3 +162,26 @@ func GetAllRows(stub *shim.ChaincodeStub, tableName string, columns []shim.Colum
 	}
 	return rows, nil
 }
+
+/*
+ Get the customer id by PAN number
+*/
+func GetCustomerID(stub *shim.ChaincodeStub, panId string) ([]string, error) {
+	var err error
+
+	// myLogger.Debugf("Get customer id for PAN : [%s]", panId)
+
+	var columns []shim.Column
+	col1 := shim.Column{Value: &shim.Column_String_{String_: panId}}
+	columns = append(columns, col1)
+
+	row, err := stub.GetRow("IDRelation", columns)
+	if err != nil {
+		// myLogger.Debugf("Failed retriving Identification details for PAN [%s]: [%s]", string(panId), err)
+		return nil, fmt.Errorf("Failed retriving Identification details  for PAN [%s]: [%s]", string(panId), err)
+	}
+
+	custIds := row.Columns[1].GetString_()
+	custIdArray := strings.Split(custIds, "|")
+	return custIdArray, nil
+}
