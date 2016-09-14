@@ -230,7 +230,7 @@ func GetIdentification(stub *shim.ChaincodeStub, customerId string) (string, err
 			",\"IdentityNumber\":\"" + row.Columns[1].GetString_() + "\"" +
 			",\"PoiType\":\"" + row.Columns[2].GetString_() + "\"" +
 			",\"PoiDoc\":\"" + row.Columns[3].GetString_() + "\"" +
-			",\"Source\":\"" + row.Columns[5].GetString_() + "\"}")
+			",\"Source\":\"" + row.Columns[4].GetString_() + "\"}")
 	}
 	jsonRespBuffer.WriteString("]")
 	myLogger.Debugf("Id Arr : [%s] ", jsonRespBuffer.String())
