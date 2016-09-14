@@ -854,15 +854,15 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 	if isOk {
 		identificationStr, _ := GetIdentification(stub, args[0])
 		myLogger.Debugf("Before identificationStr : [%s] ", identificationStr)
-		identificationStr1 := identificationStr[2:len(identificationStr)-2]
+		// identificationStr1 := identificationStr[2:len(identificationStr)-2]
 		// identificationStr1 := strings.Replace(identificationStr, "[[", "[", -1)
 		// identificationStr1 = strings.Replace(identificationStr1, "]]", "]", -1)
 		// identificationStr1 = strings.Replace(identificationStr1, "CustomerId", "custId", -1)
 		//
 		// myLogger.Debugf("After identificationStr1 : [%s] ", identificationStr1)
 		//
-		// identificationStr1 = strings.Replace(identificationStr1, "]", "", -1)
-		// identificationStr1 = strings.Replace(identificationStr1, "[", "", -1)
+		identificationStr1 := strings.Replace(identificationStr, "]", "", -1)
+		identificationStr1 = strings.Replace(identificationStr1, "[", "", -1)
 		identificationStr1 =  "[" +identificationStr1 + "]"
 
 		myLogger.Debugf("After Trial identificationStr1 : [%s] ", identificationStr1)
