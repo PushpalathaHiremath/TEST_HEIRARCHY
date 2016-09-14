@@ -11,8 +11,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/op/go-logging"
 	"github.com/ibm/ciav"
+	"github.com/op/go-logging"
 	"strconv"
 	"strings"
 )
@@ -216,11 +216,11 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	}
 	callerRole, _ := stub.ReadCertAttribute("role")
 	visibility := ciav.Helpdesk
-	if string(callerRole) == "Superadmin"{
+	if string(callerRole) == "Superadmin" {
 		visibility = ciav.Superadmin
-	}else if string(callerRole) == "RelationalManager"{
+	} else if string(callerRole) == "RelationalManager" {
 		visibility = ciav.RelationalManager
-	}else if string(callerRole) == "Manager"{
+	} else if string(callerRole) == "Manager" {
 		visibility = ciav.Manager
 	}
 
@@ -229,16 +229,16 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 
 	i := 0
 	for key, value := range visibility {
-		if i>0{
+		if i > 0 {
 			visibilityBuffer.WriteString(",")
 		}
-		visibilityBuffer.WriteString("\""+key+"\":\""+value+"\"")
+		visibilityBuffer.WriteString("\"" + key + "\":\"" + value + "\"")
 		i++
 	}
 	visibilityBuffer.WriteString("}")
 	responseStr := "{\"data\":" + jsonResp +
-										\"visibility\":" + visibility +
-									"}"
+		"\"visibility\":" + visibility +
+		"}"
 	bytes, err := json.Marshal(responseStr)
 	if err != nil {
 		return nil, errors.New("Error converting kyc record")
