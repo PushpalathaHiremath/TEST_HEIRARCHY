@@ -13,7 +13,6 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/ibm/ciav"
 	"github.com/op/go-logging"
-	"strconv"
 	"strings"
 )
 
@@ -237,11 +236,65 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	}
 	visibilityBuffer.WriteString("}")
 	responseStr := "{\"data\":" + jsonResp +
-		"\"visibility\":" + visibility +
+		"\"visibility\":" + visibilityBuffer +
 		"}"
 	bytes, err := json.Marshal(responseStr)
 	if err != nil {
 		return nil, errors.New("Error converting kyc record")
+	}
+	return bytes, nil
+}
+
+func (t *ServicesChaincode) GetKYCStats(stub *shim.ChaincodeStub) ([]byte, error) {
+	var err error
+
+	var columns []shim.Column
+	col1 := shim.Column{Value: &shim.Column_String_{String_: dummyValue}}
+	columns = append(columns, col1)
+	rows, err := GetAllRows(stub, "KYC", columns)
+	if err != nil {
+		return nil, fmt.Errorf("Failed retriving KYC details [%s]", err)
+	}
+
+	var kycBuffer bytes.Buffer
+	// var compliantBuffer bytes.Buffer
+	// var noncompliantBuffer bytes.Buffer
+	var compliantCustomersCount int
+	var noncompliantCustomersCount int
+	var totalCustomers int
+
+	for i := range rows {
+		row := rows[i]
+		totalCustomers++
+		if row.Columns[2].GetString_() == "compliant" {
+			compliantCustomersCount++
+			// if compliantBuffer.String() != "" {
+			// 	compliantBuffer.WriteString(",")
+			// }
+			// compliantBuffer.WriteString("{\"customerId\":\"" + row.Columns[1].GetString_() + "\"" +
+			// 	",\"kycStatus\":\"" + row.Columns[2].GetString_() + "\"" +
+			// 	",\"lastUpdated\":\"" + row.Columns[3].GetString_() + "\"" +
+			// 	",\"source\":\"" + row.Columns[4].GetString_() + "\"}")
+		} else if row.Columns[2].GetString_() == "non-compliant" {
+			noncompliantCustomersCount++
+			// 	if noncompliantBuffer.String() != "" {
+			// 		noncompliantBuffer.WriteString(",")
+			// 	}
+			// 	noncompliantBuffer.WriteString("{\"customerId\":\"" + row.Columns[1].GetString_() + "\"" +
+			// 		",\"kycStatus\":\"" + row.Columns[2].GetString_() + "\"" +
+			// 		",\"lastUpdated\":\"" + row.Columns[3].GetString_() + "\"" +
+			// 		",\"source\":\"" + row.Columns[4].GetString_() + "\"}")
+		}
+	}
+	kycBuffer.WriteString("{" +
+		"\"compliant\" : \"" + strconv.Itoa(compliantCustomersCount) + "\"," +
+		"\"noncompliant\" : \"" + strconv.Itoa(noncompliantCustomersCount) + "\"," +
+		"\"total\" : \"" + strconv.Itoa(totalCustomers) + "\"" +
+		"}")
+
+	bytes, err := json.Marshal(kycBuffer.String())
+	if err != nil {
+		return nil, errors.New("Error converting kyc stats")
 	}
 	return bytes, nil
 }
