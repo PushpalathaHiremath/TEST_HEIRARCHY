@@ -13,7 +13,7 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/ibm/ciav"
 	"github.com/op/go-logging"
-	"strings"
+	"strconv"
 )
 
 var myLogger = logging.MustGetLogger("customer_details")
@@ -251,7 +251,7 @@ func (t *ServicesChaincode) GetKYCStats(stub *shim.ChaincodeStub) ([]byte, error
 	var columns []shim.Column
 	col1 := shim.Column{Value: &shim.Column_String_{String_: dummyValue}}
 	columns = append(columns, col1)
-	rows, err := GetAllRows(stub, "KYC", columns)
+	rows, err := ciav.GetAllRows(stub, "KYC", columns)
 	if err != nil {
 		return nil, fmt.Errorf("Failed retriving KYC details [%s]", err)
 	}
