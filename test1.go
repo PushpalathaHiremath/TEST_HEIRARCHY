@@ -5,8 +5,9 @@ import (
 	"github.com/op/go-logging"
 )
 
-var myLogger = logging.MustGetLogger("customer_address_details")
+var myLogger = logging.MustGetLogger("Color")
+
 func main() {
-	fmt.Println("Hello, My color is : , [%s]", GetColor())
+	myLogger.Debug("Hello, My color is : , [%s]", GetColor())
 }
 
