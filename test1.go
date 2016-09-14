@@ -1,4 +1,4 @@
-package ROV_CIAV
+package main
 
 import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
