@@ -1,7 +1,6 @@
 package ROV_CIAV
 
 import (
-	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/op/go-logging"
 )
@@ -26,7 +25,8 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 func main() {
 	err := shim.Start(new(ServicesChaincode))
 	if err != nil {
-		fmt.Printf("Error starting ServicesChaincode: %s", err)
+		myLogger.Debug("Hello, Error")
+	//	fmt.Printf("Error starting ServicesChaincode: %s", err)
 	}
 }
 
