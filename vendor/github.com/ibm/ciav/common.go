@@ -16,7 +16,7 @@ var Manager map[string]string
 var RelationalManager map[string]string
 var Helpdesk map[string]string
 
-func Initialize()() {
+func GetVisibility()(string) {
 	Superadmin = map[string]string{
 		"CustomerId":     "W",
 		"IdentityNumber": "W",
@@ -135,6 +135,31 @@ func Initialize()() {
 		"Pincode":        "R",
 		"PoaType":        "W",
 		"PoaDoc":         "W"}
+
+
+		callerRole, _ := stub.ReadCertAttribute("role")
+		visibility := Helpdesk
+		if string(callerRole) == "Superadmin" {
+			visibility = Superadmin
+		} else if string(callerRole) == "RelationalManager" {
+			visibility = RelationalManager
+		} else if string(callerRole) == "Manager" {
+			visibility = Manager
+		}
+
+		var visibilityBuffer bytes.Buffer
+		visibilityBuffer.WriteString("{")
+
+		i := 0
+		for key, value := range visibility {
+			if i > 0 {
+				visibilityBuffer.WriteString(",")
+			}
+			visibilityBuffer.WriteString("\"" + key + "\":\"" + value + "\"")
+			i++
+		}
+		visibilityBuffer.WriteString("}")
+		return visibilityBuffer.String()
 }
 
 /*
