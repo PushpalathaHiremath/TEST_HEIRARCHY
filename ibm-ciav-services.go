@@ -213,8 +213,32 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	} else {
 		return nil, errors.New("Invalid arguments. Please query by CUST_ID or PAN")
 	}
+	callerRole, _ := stub.ReadCertAttribute("role")
+	visibility := ciav.Helpdesk
+	if string(callerRole) == "Superadmin"{
+		visibility = ciav.Superadmin
+	}else if string(callerRole) == "RelationalManager"{
+		visibility = ciav.RelationalManager
+	}else if string(callerRole) == "Manager"{
+		visibility = ciav.Manager
+	}
 
-	bytes, err := json.Marshal(jsonResp)
+	var visibilityBuffer bytes.Buffer
+	visibilityBuffer.WriteString("{")
+
+	i := 0
+	for key, value := range visibility {
+		if i>0{
+			visibilityBuffer.WriteString(",")
+		}
+		visibilityBuffer.WriteString("\""+key+"\":\""+value+"\"")
+		i++
+	}
+	visibilityBuffer.WriteString("}")
+	responseStr := "{\"data\":" + jsonResp +
+										\"visibility\":" + visibility +
+									"}"
+	bytes, err := json.Marshal(responseStr)
 	if err != nil {
 		return nil, errors.New("Error converting kyc record")
 	}
