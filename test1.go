@@ -11,7 +11,7 @@ type ServicesChaincode struct {
 }
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	myLogger.Debug("Hello, My color is : , [%s]", color.GetColor())
+	myLogger.Debug("Hello, My color is : [%s]", color.GetColor())
 	return nil, nil
 }
 
