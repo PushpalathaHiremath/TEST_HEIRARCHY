@@ -236,7 +236,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	}
 	visibilityBuffer.WriteString("}")
 	responseStr := "{\"data\":" + jsonResp +
-		"\"visibility\":" + visibilityBuffer +
+		"\"visibility\":" + visibilityBuffer.String() +
 		"}"
 	bytes, err := json.Marshal(responseStr)
 	if err != nil {
