@@ -861,9 +861,9 @@ func UpdateIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, erro
 		//
 		// myLogger.Debugf("After identificationStr1 : [%s] ", identificationStr1)
 		//
-		identificationStr1 := strings.Replace(identificationStr, "]", "", -1)
+		identificationStr1 := strings.Replace(string(identificationStr), "]", "", -1)
 		identificationStr1 = strings.Replace(identificationStr1, "[", "", -1)
-		identificationStr1 =  "[" +identificationStr1 + "]"
+		// identificationStr1 =  "[" +identificationStr1 + "]"
 
 		myLogger.Debugf("After Trial identificationStr1 : [%s] ", identificationStr1)
 
