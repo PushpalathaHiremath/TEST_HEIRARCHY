@@ -1,7 +1,7 @@
 package ROV_CIAV
 
 import (
-	"fmt"
+//	"fmt"
 )
 
 func GetColor() (string){
