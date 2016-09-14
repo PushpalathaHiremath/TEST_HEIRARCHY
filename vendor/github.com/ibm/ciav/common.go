@@ -15,7 +15,7 @@ var Manager map[string]string
 var RelationalManager map[string]string
 var Helpdesk map[string]string
 
-func Initialize() {
+func Initialize()() {
 	Superadmin = map[string]string{
 		"CustomerId":     "W",
 		"IdentityNumber": "W",
