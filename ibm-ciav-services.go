@@ -78,6 +78,7 @@ type Customer struct {
    Deploy KYC data model
 */
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+	ciav.Initialize()
 	ciav.CreateIdentificationTable(stub, args)
 	ciav.CreateCustomerTable(stub, args)
 	ciav.CreateKycTable(stub, args)
