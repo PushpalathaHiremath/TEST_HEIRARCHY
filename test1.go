@@ -3,6 +3,7 @@ package ROV_CIAV
 import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/op/go-logging"
+	"github.com/color"
 )
 
 var myLogger = logging.MustGetLogger("Color")
@@ -10,7 +11,7 @@ type ServicesChaincode struct {
 }
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	myLogger.Debug("Hello, My color is : , [%s]", GetColor())
+	myLogger.Debug("Hello, My color is : , [%s]", color.GetColor())
 	return nil, nil
 }
 
