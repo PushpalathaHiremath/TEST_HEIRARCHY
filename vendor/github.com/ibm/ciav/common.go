@@ -23,7 +23,6 @@ func GetVisibility(callerRole string)(string) {
 		"IdentityNumber": "W",
 		"PoiType":        "W",
 		"PoiDoc":         "W",
-		"ExpiryDate":     "W",
 		"Source":         "W",
 		"FirstName":      "W",
 		"LastName":       "W",
@@ -53,7 +52,6 @@ func GetVisibility(callerRole string)(string) {
 		"IdentityNumber": "W",
 		"PoiType":        "W",
 		"PoiDoc":         "W",
-		"ExpiryDate":     "W",
 		"Source":         "W",
 		"FirstName":      "W",
 		"LastName":       "W",
@@ -83,7 +81,6 @@ func GetVisibility(callerRole string)(string) {
 		"IdentityNumber": "W",
 		"PoiType":        "W",
 		"PoiDoc":         "W",
-		"ExpiryDate":     "W",
 		"Source":         "W",
 		"FirstName":      "W",
 		"LastName":       "W",
@@ -109,10 +106,9 @@ func GetVisibility(callerRole string)(string) {
 		"PoaDoc":         "W"}
 	Helpdesk = map[string]string{
 		"CustomerId":     "R",
-		"IdentityNumber": "R",
+		"IdentityNumber": "W",
 		"PoiType":        "W",
 		"PoiDoc":         "W",
-		"ExpiryDate":     "R",
 		"Source":         "W",
 		"FirstName":      "R",
 		"LastName":       "R",
@@ -123,17 +119,17 @@ func GetVisibility(callerRole string)(string) {
 		"Occupation":     "R",
 		"AnnualIncome":   "R",
 		"IncomeSource":   "R",
-		"KycStatus":      "R",
+		"KycStatus":      "W",
 		"KycRiskLevel":   "N",
-		"LastUpdated":    "R",
-		"AddressId":      "R",
-		"AddressType":    "R",
-		"DoorNumber":     "R",
-		"Street":         "R",
-		"Locality":       "R",
-		"City":           "R",
-		"State":          "R",
-		"Pincode":        "R",
+		"LastUpdated":    "W",
+		"AddressId":      "W",
+		"AddressType":    "W",
+		"DoorNumber":     "W",
+		"Street":         "W",
+		"Locality":       "W",
+		"City":           "W",
+		"State":          "W",
+		"Pincode":        "W",
 		"PoaType":        "W",
 		"PoaDoc":         "W"}
 
@@ -148,7 +144,6 @@ func GetVisibility(callerRole string)(string) {
 
 		var visibilityBuffer bytes.Buffer
 		visibilityBuffer.WriteString("{")
-
 		i := 0
 		for key, value := range visibility {
 			if i > 0 {
@@ -205,8 +200,82 @@ func GetCustomerID(stub *shim.ChaincodeStub, panId string) ([]string, error) {
 		// myLogger.Debugf("Failed retriving Identification details for PAN [%s]: [%s]", string(panId), err)
 		return nil, fmt.Errorf("Failed retriving Identification details  for PAN [%s]: [%s]", string(panId), err)
 	}
-
 	custIds := row.Columns[1].GetString_()
 	custIdArray := strings.Split(custIds, "|")
 	return custIdArray, nil
+}
+
+func GetCallerRole(stub *shim.ChaincodeStub)(string){
+	callerRole, _ := stub.ReadCertAttribute("role")
+	return string(callerRole)
+}
+
+func GetVisibility(stub *shim.ChaincodeStub)(map[string]string){
+	callerRole := GetCallerRole(stub)
+
+	visibility := Helpdesk
+	if callerRole == "Superadmin" {
+		visibility = Superadmin
+	} else if callerRole == "RelationalManager" {
+		visibility = RelationalManager
+	} else if callerRole == "Manager" {
+		visibility = Manager
+	}
+}
+
+func CanModifyIdentificationTable(stub *shim.ChaincodeStub)(bool){
+	visibility := GetVisibility(stub)
+	// "IdentityNumber": "W",
+	// "PoiType":        "W",
+	// "PoiDoc":         "W",
+	if visibility["IdentityNumber"]=="W" && visibility["PoiType"]=="W" && visibility["PoiDoc"]=="W"{
+		return true
+	}
+	return false
+}
+
+func CanModifyAddressTable(stub *shim.ChaincodeStub)(bool){
+	visibility := GetVisibility(stub)
+	// "AddressId":      "W",
+	// "AddressType":    "W",
+	// "DoorNumber":     "W",
+	// "Street":         "W",
+	// "Locality":       "W",
+	// "City":           "W",
+	// "State":          "W",
+	// "Pincode":        "W",
+	// "PoaType":        "W",
+	// "PoaDoc":         "W"}
+	if visibility["AddressId"]=="W" && visibility["AddressType"]=="W" && visibility["DoorNumber"]=="W"  && visibility["Street"]=="W" && visibility["Locality"]=="W"  && visibility["City"]=="W"  && visibility["State"]=="W" && visibility["Pincode"]=="W" && visibility["PoaType"]=="W" && visibility["PoaDoc"]=="W"{
+		return true
+	}
+	return false
+}
+
+func CanModifyCustomerTable(stub *shim.ChaincodeStub)(bool){
+	visibility := GetVisibility(stub)
+	// "FirstName":      "W",
+	// "LastName":       "W",
+	// "Sex":            "W",
+	// "EmailId":        "W",
+	// "Dob":            "W",
+	// "PhoneNumber":    "W",
+	// "Occupation":     "W",
+	// "AnnualIncome":   "W",
+	// "IncomeSource":   "W",
+	if visibility["FirstName"]=="W" && visibility["LastName"]=="W" && visibility["Sex"]=="W" && visibility["EmailId"]=="W" && visibility["Dob"]=="W"  && visibility["PhoneNumber"]=="W" && visibility["Occupation"]=="W" && visibility["AnnualIncome"]=="W" && visibility["IncomeSource"]=="W"{
+		return true
+	}
+	return false
+}
+
+func CanModifyKYCTable(stub *shim.ChaincodeStub)(bool){
+	visibility := GetVisibility(stub)
+	// "KycStatus":      "R",
+	// "KycRiskLevel":   "N",
+	// "LastUpdated":    "R",
+	if visibility["KycStatus"]=="W" && visibility["KycRiskLevel"]=="W" && visibility["LastUpdated"]=="W" {
+		return true
+	}
+	return false
 }
