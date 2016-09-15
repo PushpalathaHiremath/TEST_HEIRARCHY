@@ -51,7 +51,7 @@ func CreateCustomerTable(stub *shim.ChaincodeStub, args []string) ([]byte, error
 	Add customer record
 */
 func AddCustomer(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Deb ug("Adding Customer record ...")
+	myLogger.Debug("Adding Customer record ...")
 
 	if len(args) != 11 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 11")
