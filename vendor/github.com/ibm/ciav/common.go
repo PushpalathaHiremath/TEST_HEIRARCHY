@@ -221,6 +221,7 @@ func GetVisibilityForCurrentUser(stub *shim.ChaincodeStub)(map[string]string){
 	} else if callerRole == "Manager" {
 		visibility = Manager
 	}
+	return visibility
 }
 
 func CanModifyIdentificationTable(stub *shim.ChaincodeStub)(bool){
