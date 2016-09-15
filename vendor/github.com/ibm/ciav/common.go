@@ -210,7 +210,7 @@ func GetCallerRole(stub *shim.ChaincodeStub)(string){
 	return string(callerRole)
 }
 
-func GetVisibility(stub *shim.ChaincodeStub)(map[string]string){
+func GetVisibilityForCurrentUser(stub *shim.ChaincodeStub)(map[string]string){
 	callerRole := GetCallerRole(stub)
 
 	visibility := Helpdesk
@@ -224,7 +224,7 @@ func GetVisibility(stub *shim.ChaincodeStub)(map[string]string){
 }
 
 func CanModifyIdentificationTable(stub *shim.ChaincodeStub)(bool){
-	visibility := GetVisibility(stub)
+	visibility := GetVisibilityForCurrentUser(stub)
 	// "IdentityNumber": "W",
 	// "PoiType":        "W",
 	// "PoiDoc":         "W",
@@ -235,7 +235,7 @@ func CanModifyIdentificationTable(stub *shim.ChaincodeStub)(bool){
 }
 
 func CanModifyAddressTable(stub *shim.ChaincodeStub)(bool){
-	visibility := GetVisibility(stub)
+	visibility := GetVisibilityForCurrentUser(stub)
 	// "AddressId":      "W",
 	// "AddressType":    "W",
 	// "DoorNumber":     "W",
@@ -253,7 +253,7 @@ func CanModifyAddressTable(stub *shim.ChaincodeStub)(bool){
 }
 
 func CanModifyCustomerTable(stub *shim.ChaincodeStub)(bool){
-	visibility := GetVisibility(stub)
+	visibility := GetVisibilityForCurrentUser(stub)
 	// "FirstName":      "W",
 	// "LastName":       "W",
 	// "Sex":            "W",
@@ -270,7 +270,7 @@ func CanModifyCustomerTable(stub *shim.ChaincodeStub)(bool){
 }
 
 func CanModifyKYCTable(stub *shim.ChaincodeStub)(bool){
-	visibility := GetVisibility(stub)
+	visibility := GetVisibilityForCurrentUser(stub)
 	// "KycStatus":      "R",
 	// "KycRiskLevel":   "N",
 	// "LastUpdated":    "R",
