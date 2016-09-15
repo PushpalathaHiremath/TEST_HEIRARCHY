@@ -49,6 +49,7 @@ type Kyc struct {
 	KycStatus   string
 	LastUpdated string
 	Source      string
+	KycRiskLevel string
 }
 
 type Address struct {
@@ -97,19 +98,29 @@ func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	if err != nil {
 		fmt.Println("Error is :", err)
 	}
-	for i := range Cust.Identification {
-		ciav.AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
-			Cust.Identification[i].Source})
+	if ciav.CanModifyIdentificationTable(stub){
+		for i := range Cust.Identification {
+			ciav.AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
+				Cust.Identification[i].Source})
+		}
 	}
-	ciav.AddCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
-		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
-		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
-	ciav.AddKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source})
-	for i := range Cust.Address {
-		ciav.AddAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
-			Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
-			Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].Source})
+	if ciav.CanModifyCustomerTable(stub){
+		ciav.AddCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
+			Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
+			Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
 	}
+	if ciav.CanModifyKYCTable(stub){
+		ciav.AddKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, "3"})
+	}
+
+	if ciav.CanModifyAddressTable(stub){
+		for i := range Cust.Address {
+			ciav.AddAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
+				Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
+				Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].Source})
+		}
+	}
+
 	return nil, nil
 }
 
@@ -126,18 +137,27 @@ func (t *ServicesChaincode) updateCIAV(stub *shim.ChaincodeStub, args []string) 
 	if err != nil {
 		fmt.Println("Error is :", err)
 	}
-	for i := range Cust.Identification {
-		ciav.UpdateIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
-			Cust.Identification[i].Source})
+	if ciav.CanModifyIdentificationTable(stub){
+		for i := range Cust.Identification {
+			ciav.UpdateIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
+				Cust.Identification[i].Source})
+		}
 	}
-	ciav.UpdateCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
-		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
-		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
-	ciav.UpdateKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source})
-	for i := range Cust.Address {
-		ciav.UpdateAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
-			Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
-			Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].Source})
+	if ciav.CanModifyCustomerTable(stub){
+		ciav.UpdateIdentification(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
+			Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
+			Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
+	}
+	if ciav.CanModifyKYCTable(stub){
+		ciav.UpdateKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, "3"})
+	}
+
+	if ciav.CanModifyAddressTable(stub){
+		for i := range Cust.Address {
+			ciav.UpdateAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
+				Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
+				Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].Source})
+		}
 	}
 	return nil, nil
 }
@@ -212,9 +232,8 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	} else {
 		return nil, errors.New("Invalid arguments. Please query by CUST_ID or PAN")
 	}
-	callerRole, _ := stub.ReadCertAttribute("role")
 	responseStr := "{\"data\":" + jsonResp + "," +
-		"\"visibility\":" + ciav.GetVisibility(string(callerRole)) +
+		"\"visibility\":" + ciav.GetVisibility(ciav.GetCallerRole(stub)) +
 		"}"
 	bytes, err := json.Marshal(responseStr)
 	if err != nil {
