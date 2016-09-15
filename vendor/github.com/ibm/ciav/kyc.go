@@ -53,7 +53,7 @@ func CreateKycTable(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	Add KYC record
 */
 func AddKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	// myLogger.Debug("Adding KYC record ...")
+	myLogger.Debug("Adding KYC record ...")
   var err error
 	// if len(args) != 5 {
 	// 	return nil, errors.New("Incorrect number of arguments. Expecting 5")
@@ -117,7 +117,7 @@ func AddKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	}
 
 
-	// myLogger.Debug("Congratulations !!! Successfully added")
+	myLogger.Debug("Congratulations !!! Successfully added KYC")
 	return nil, err
 }
 

@@ -66,7 +66,7 @@ func CreateIdentificationTable(stub *shim.ChaincodeStub, args []string) ([]byte,
 	add Identification record
 */
 func AddIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	// myLogger.Debug("Add Identification record ...")
+	myLogger.Debug("Add Identification record ...")
 	if len(args) != 5 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 5")
 	}
@@ -95,7 +95,7 @@ func AddIdentification(stub *shim.ChaincodeStub, args []string) ([]byte, error) 
 		return nil, errors.New("Error in adding Identification record.")
 	}
 
-	// myLogger.Debug("Congratulations !!! Successfully added, [%s]", res)
+	myLogger.Debug("Congratulations !!! Successfully added,", customerId, identityNumber, poiType, poiDoc, source)
 	return nil, err
 }
 

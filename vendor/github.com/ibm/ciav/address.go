@@ -91,12 +91,12 @@ func AddAddress(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	if !ok && err == nil {
 		return nil, errors.New("Error in adding address record.")
 	}
-	// myLogger.Debug("Congratulations !!! Successfully added",)
+	myLogger.Debug("Congratulations !!! Successfully added address",)
 	return nil, err
 }
 
 func UpdateAddress(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	// myLogger.Debug("Updating address record ...")
+	myLogger.Debug("Updating address record ...")
 
 	if len(args) != 12 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 12")
