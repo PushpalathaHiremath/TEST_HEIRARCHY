@@ -139,7 +139,7 @@ func UpdateKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 		isSuperAdmin, _ := stub.VerifyAttribute("role", []byte("Superadmin"))
 		isManager, _ := stub.VerifyAttribute("role", []byte("Manager"))
 		if isManager || isSuperAdmin {
-			ok, err := stub.InsertRow("KYC", shim.Row{
+			ok, err := stub.ReplaceRow("KYC", shim.Row{
 				Columns: []*shim.Column{
 					&shim.Column{Value: &shim.Column_String_{String_: dummyValue}},
 					&shim.Column{Value: &shim.Column_String_{String_: customerId}},
