@@ -93,12 +93,15 @@ func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
+	myLogger.Debugf("Add CIAV started ...")
 	var Cust Customer
 	err := json.Unmarshal([]byte(string(args[0])), &Cust)
 	if err != nil {
 		fmt.Println("Error is :", err)
 	}
+	myLogger.Debugf("ID :",ciav.CanModifyIdentificationTable(stub))
 	if ciav.CanModifyIdentificationTable(stub){
+		myLogger.Debugf("add Identification ...")
 		for i := range Cust.Identification {
 			ciav.AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
 				Cust.Identification[i].Source})
@@ -110,7 +113,7 @@ func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]
 			Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
 	}
 	if ciav.CanModifyKYCTable(stub){
-		ciav.AddKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, "3"})
+		ciav.AddKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, Cust.Kyc.KycRiskLevel})
 	}
 
 	if ciav.CanModifyAddressTable(stub){
@@ -149,7 +152,7 @@ func (t *ServicesChaincode) updateCIAV(stub *shim.ChaincodeStub, args []string) 
 			Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
 	}
 	if ciav.CanModifyKYCTable(stub){
-		ciav.UpdateKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, "3"})
+		ciav.UpdateKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, Cust.Kyc.KycRiskLevel})
 	}
 
 	if ciav.CanModifyAddressTable(stub){
