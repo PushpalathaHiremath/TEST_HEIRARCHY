@@ -94,6 +94,8 @@ func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	}
 
 	myLogger.Debugf("Add CIAV started ...")
+	ciav.GetVisibility(ciav.GetCallerRole(stub)
+	
 	var Cust Customer
 	err := json.Unmarshal([]byte(string(args[0])), &Cust)
 	if err != nil {
