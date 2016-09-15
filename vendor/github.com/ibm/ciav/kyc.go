@@ -59,11 +59,17 @@ func AddKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	// 	return nil, errors.New("Incorrect number of arguments. Expecting 5")
 	// }
 
-	var customerId string
-	var kycStatus string
-	var lastUpdated string
-	var source string
-	var riskLevel string
+	// var customerId string
+	// var kycStatus string
+	// var lastUpdated string
+	// var source string
+	// var riskLevel string
+
+	customerId := args[0]
+	kycStatus := args[1]
+	lastUpdated := args[2]
+	source := args[3]
+	riskLevel := args[4]
 
 	isSuperAdmin, _ := stub.VerifyAttribute("role", []byte("Superadmin"))
 	isManager, _ := stub.VerifyAttribute("role", []byte("Manager"))
@@ -130,11 +136,17 @@ func UpdateKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	// if len(args) != 5 {
 	// 	return nil, errors.New("Incorrect number of arguments. Expecting 5")
 	// }
-		var customerId string
-		var kycStatus string
-		var lastUpdated string
-		var source string
-		var riskLevel string
+		// var customerId string
+		// var kycStatus string
+		// var lastUpdated string
+		// var source string
+		// var riskLevel string
+
+		customerId := args[0]
+		kycStatus := args[1]
+		lastUpdated := args[2]
+		source := args[3]
+		riskLevel := args[4]
 
 		isSuperAdmin, _ := stub.VerifyAttribute("role", []byte("Superadmin"))
 		isManager, _ := stub.VerifyAttribute("role", []byte("Manager"))
