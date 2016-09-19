@@ -232,7 +232,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 
 	callerRole := ciav.GetCallerRole(stub)
 	allowedActions := "{\"updateKYCDocs\":\""
-
+	myLogger.Debugf("Risk Level : ",riskLevel)
 	if riskLevel == "3"{
 		allowedActions = allowedActions + "true"
 	}else if riskLevel == "2"{
