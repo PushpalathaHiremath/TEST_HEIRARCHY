@@ -216,7 +216,7 @@ func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, string, error)
 	columns = append(columns, col2)
 	row, err := stub.GetRow("KYC", columns)
 	if err != nil {
-		return "", fmt.Errorf("Failed retriving KYC details [%s]: [%s]", string(customerId), err)
+		return "", "",fmt.Errorf("Failed retriving KYC details [%s]: [%s]", string(customerId), err)
 	}
 	jsonResp := "{\"customerId\":\"" + row.Columns[1].GetString_() + "\"" +
 		",\"kycStatus\":\"" + row.Columns[2].GetString_() + "\"" +
