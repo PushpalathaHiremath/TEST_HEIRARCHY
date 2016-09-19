@@ -78,6 +78,7 @@ type Customer struct {
    Deploy KYC data model
 */
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+	ciav.GetVisibility(ciav.GetCallerRole(stub))
 	ciav.CreateIdentificationTable(stub, args)
 	ciav.CreateCustomerTable(stub, args)
 	ciav.CreateKycTable(stub, args)
@@ -93,39 +94,29 @@ func (t *ServicesChaincode) addCIAV(stub *shim.ChaincodeStub, args []string) ([]
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
 	}
 
-	myLogger.Debugf("Add CIAV started ...")
-	ciav.GetVisibility(ciav.GetCallerRole(stub))
-
+	myLogger.Debugf("Adding Customer record ...")
 	var Cust Customer
 	err := json.Unmarshal([]byte(string(args[0])), &Cust)
 	if err != nil {
 		fmt.Println("Error is :", err)
 	}
-	myLogger.Debugf("ID :",ciav.CanModifyIdentificationTable(stub))
-	if ciav.CanModifyIdentificationTable(stub){
-		myLogger.Debugf("add Identification ...")
-		for i := range Cust.Identification {
-			ciav.AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
-				Cust.Identification[i].Source})
-		}
-	}
-	if ciav.CanModifyCustomerTable(stub){
-		ciav.AddCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
-			Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
-			Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
-	}
-	if ciav.CanModifyKYCTable(stub){
-		ciav.AddKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, Cust.Kyc.KycRiskLevel})
+
+	for i := range Cust.Identification {
+		ciav.AddIdentification(stub, []string{Cust.Identification[i].CustomerId, Cust.Identification[i].IdentityNumber, Cust.Identification[i].PoiType, Cust.Identification[i].PoiDoc,
+			Cust.Identification[i].Source})
 	}
 
-	if ciav.CanModifyAddressTable(stub){
-		for i := range Cust.Address {
-			ciav.AddAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
-				Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
-				Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].Source})
-		}
-	}
+	ciav.AddCustomer(stub, []string{Cust.PersonalDetails.CustomerId, Cust.PersonalDetails.FirstName, Cust.PersonalDetails.LastName,
+		Cust.PersonalDetails.Sex, Cust.PersonalDetails.EmailId, Cust.PersonalDetails.Dob, Cust.PersonalDetails.PhoneNumber, Cust.PersonalDetails.Occupation,
+		Cust.PersonalDetails.AnnualIncome, Cust.PersonalDetails.IncomeSource, Cust.PersonalDetails.Source})
 
+	ciav.AddKYC(stub, []string{Cust.Kyc.CustomerId, Cust.Kyc.KycStatus, Cust.Kyc.LastUpdated, Cust.Kyc.Source, Cust.Kyc.KycRiskLevel})
+
+	for i := range Cust.Address {
+		ciav.AddAddress(stub, []string{Cust.Address[i].CustomerId, Cust.Address[i].AddressId, Cust.Address[i].AddressType,
+			Cust.Address[i].DoorNumber, Cust.Address[i].Street, Cust.Address[i].Locality, Cust.Address[i].City, Cust.Address[i].State,
+			Cust.Address[i].Pincode, Cust.Address[i].PoaType, Cust.Address[i].PoaDoc, Cust.Address[i].Source})
+	}
 	return nil, nil
 }
 
@@ -227,7 +218,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 		customerId := args[1]
 		identificationStr, err = ciav.GetIdentification(stub, customerId)
 		customerStr, err = ciav.GetCustomer(stub, customerId)
-		kycStr, err = ciav.GetKYC(stub, customerId)
+		kycStr, riskLevel, err = ciav.GetKYC(stub, customerId)
 		addressStr, err = ciav.GetAddress(stub, customerId)
 
 		jsonResp = "{\"Identification\":" + identificationStr +
@@ -237,8 +228,38 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	} else {
 		return nil, errors.New("Invalid arguments. Please query by CUST_ID or PAN")
 	}
+
+	callerRole := GetCallerRole(stub)
+	allowedActions := "{\"updateKYCDocs\":\""
+
+	if callerRole == "Superadmin" {
+		allowedActions = allowedActions + "true"
+	} else if callerRole == "RelationalManager" {
+		visibility = RelationalManager
+	} else if callerRole == "Manager" {
+		visibility = Manager
+	}
+
+	if riskLevel == "3"{
+		allowedActions = allowedActions + "true"
+	}else if riskLevel == "2"{
+		if callerRole == "Superadmin" || callerRole == "RelationalManager"{
+			allowedActions = allowedActions + "true"
+		}else{
+			allowedActions = allowedActions + "false"
+		}
+	}else if riskLevel == "2"{
+		if callerRole == "Superadmin"{
+			allowedActions = allowedActions + "true"
+		}else{
+			allowedActions = allowedActions + "false"
+		}
+	}
+	allowedActions = allowedActions + "\"}"
+
 	responseStr := "{\"data\":" + jsonResp + "," +
 		"\"visibility\":" + ciav.GetVisibility(ciav.GetCallerRole(stub)) +
+		"\"allowedActions\":" + allowedActions +
 		"}"
 	bytes, err := json.Marshal(responseStr)
 	if err != nil {
