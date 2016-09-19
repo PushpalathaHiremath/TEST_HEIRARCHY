@@ -264,7 +264,10 @@ func CanModifyCustomerTable(stub *shim.ChaincodeStub)(bool){
 	// "Occupation":     "W",
 	// "AnnualIncome":   "W",
 	// "IncomeSource":   "W",
-	if visibility["FirstName"]=="W" && visibility["LastName"]=="W" && visibility["Sex"]=="W" && visibility["EmailId"]=="W" && visibility["Dob"]=="W"  && visibility["PhoneNumber"]=="W" && visibility["Occupation"]=="W" && visibility["AnnualIncome"]=="W" && visibility["IncomeSource"]=="W"{
+	if visibility["FirstName"]=="W" && visibility["LastName"]=="W" &&
+	visibility["Sex"]=="W" && visibility["EmailId"]=="W" && visibility["Dob"]=="W"
+	&& visibility["PhoneNumber"]=="W" && visibility["Occupation"]=="W" && visibility["AnnualIncome"]=="W"
+	 && visibility["IncomeSource"]=="W"{
 		return true
 	}
 	return false
@@ -275,8 +278,24 @@ func CanModifyKYCTable(stub *shim.ChaincodeStub)(bool){
 	// "KycStatus":      "R",
 	// "KycRiskLevel":   "N",
 	// "LastUpdated":    "R",
+	callerRole := GetCallerRole(stub)
+
 	if visibility["KycStatus"]=="W" && visibility["KycRiskLevel"]=="W" && visibility["LastUpdated"]=="W" {
-		return true
+		if riskLevel == "3"{
+			return true
+		}else if riskLevel == "2"{
+			if callerRole == "Superadmin" || callerRole == "Manager" || callerRole == "RelationalManager"{
+				return true
+			}else{
+				return false
+			}
+		}else if riskLevel == "1"{
+			if callerRole == "Superadmin" || callerRole == "Manager"{
+				return true
+			}else{
+				return false
+			}
+		}
 	}
 	return false
 }
