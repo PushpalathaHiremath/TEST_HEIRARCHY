@@ -278,21 +278,22 @@ func CanModifyKYCTable(stub *shim.ChaincodeStub)(bool){
 	callerRole := GetCallerRole(stub)
 
 	if visibility["KycStatus"]=="W" && visibility["KycRiskLevel"]=="W" && visibility["LastUpdated"]=="W" {
-		if riskLevel == "3"{
-			return true
-		}else if riskLevel == "2"{
-			if callerRole == "Superadmin" || callerRole == "Manager" || callerRole == "RelationalManager"{
-				return true
-			}else{
-				return false
-			}
-		}else if riskLevel == "1"{
-			if callerRole == "Superadmin" || callerRole == "Manager"{
-				return true
-			}else{
-				return false
-			}
-		}
+		// if riskLevel == "3"{
+		// 	return true
+		// }else if riskLevel == "2"{
+		// 	if callerRole == "Superadmin" || callerRole == "Manager" || callerRole == "RelationalManager"{
+		// 		return true
+		// 	}else{
+		// 		return false
+		// 	}
+		// }else if riskLevel == "1"{
+		// 	if callerRole == "Superadmin" || callerRole == "Manager"{
+		// 		return true
+		// 	}else{
+		// 		return false
+		// 	}
+		// }
+		return true
 	}
 	return false
 }
