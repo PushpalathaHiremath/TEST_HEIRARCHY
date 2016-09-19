@@ -206,7 +206,7 @@ func UpdateKYC(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 /*
  Get KYC record
 */
-func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, error) {
+func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, string, error) {
 	var err error
 	// myLogger.Debugf("Get identification record for customer : [%s]", string(customerId))
 	var columns []shim.Column
@@ -235,5 +235,5 @@ func GetKYC(stub *shim.ChaincodeStub, customerId string) (string, error) {
 	}
 	jsonResp = jsonResp +"}"
 
-	return jsonResp, nil
+	return jsonResp, row.Columns[5].GetString_(), nil
 }
