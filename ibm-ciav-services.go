@@ -195,6 +195,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	var customerStr string
 	var kycStr string
 	var addressStr string
+	var riskLevel string
 	if args[0] == "PAN" {
 		customerIds, err = ciav.GetCustomerID(stub, args[1])
 		// jsonResp = "["
