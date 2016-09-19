@@ -251,7 +251,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 	allowedActions = allowedActions + "\"}"
 
 	responseStr := "{\"data\":" + jsonResp + "," +
-		"\"visibility\":" + ciav.GetVisibility(ciav.GetCallerRole(stub)) +
+		"\"visibility\":" + ciav.GetVisibility(ciav.GetCallerRole(stub)) + "," +
 		"\"allowedActions\":" + allowedActions +
 		"}"
 	bytes, err := json.Marshal(responseStr)
