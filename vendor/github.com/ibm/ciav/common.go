@@ -264,10 +264,7 @@ func CanModifyCustomerTable(stub *shim.ChaincodeStub)(bool){
 	// "Occupation":     "W",
 	// "AnnualIncome":   "W",
 	// "IncomeSource":   "W",
-	if visibility["FirstName"]=="W" && visibility["LastName"]=="W" &&
-	visibility["Sex"]=="W" && visibility["EmailId"]=="W" && visibility["Dob"]=="W"
-	&& visibility["PhoneNumber"]=="W" && visibility["Occupation"]=="W" && visibility["AnnualIncome"]=="W"
-	 && visibility["IncomeSource"]=="W"{
+	if visibility["FirstName"]=="W" && visibility["LastName"]=="W" && visibility["Sex"]=="W" && visibility["EmailId"]=="W" && visibility["Dob"]=="W" && visibility["PhoneNumber"]=="W" && visibility["Occupation"]=="W" && visibility["AnnualIncome"]=="W" && visibility["IncomeSource"]=="W"{
 		return true
 	}
 	return false
