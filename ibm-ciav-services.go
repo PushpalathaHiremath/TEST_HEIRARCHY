@@ -203,7 +203,7 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 			customerId := customerIds[i]
 			identificationStr, err = ciav.GetIdentification(stub, customerId)
 			customerStr, err = ciav.GetCustomer(stub, customerId)
-			kycStr, err = ciav.GetKYC(stub, customerId)
+			kycStr, riskLevel, err = ciav.GetKYC(stub, customerId)
 			addressStr, err = ciav.GetAddress(stub, customerId)
 
 			if i != 0 {
@@ -230,27 +230,19 @@ func (t *ServicesChaincode) getCIAV(stub *shim.ChaincodeStub, args []string) ([]
 		return nil, errors.New("Invalid arguments. Please query by CUST_ID or PAN")
 	}
 
-	callerRole := GetCallerRole(stub)
+	callerRole := ciav.GetCallerRole(stub)
 	allowedActions := "{\"updateKYCDocs\":\""
-
-	if callerRole == "Superadmin" {
-		allowedActions = allowedActions + "true"
-	} else if callerRole == "RelationalManager" {
-		visibility = RelationalManager
-	} else if callerRole == "Manager" {
-		visibility = Manager
-	}
 
 	if riskLevel == "3"{
 		allowedActions = allowedActions + "true"
 	}else if riskLevel == "2"{
-		if callerRole == "Superadmin" || callerRole == "RelationalManager"{
+		if callerRole == "Superadmin" || callerRole == "Manager" || callerRole == "RelationalManager"{
 			allowedActions = allowedActions + "true"
 		}else{
 			allowedActions = allowedActions + "false"
 		}
-	}else if riskLevel == "2"{
-		if callerRole == "Superadmin"{
+	}else if riskLevel == "1"{
+		if callerRole == "Superadmin" || callerRole == "Manager"{
 			allowedActions = allowedActions + "true"
 		}else{
 			allowedActions = allowedActions + "false"
