@@ -36,7 +36,10 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	adminCert, _ := stub.GetCallerMetadata()
 	val1, _ := attr.GetValueFrom("role", adminCert)
 
-	ok, err := t.isCaller(stub, adminCert)
+	ok, _ := t.isCaller(stub, adminCert)
+	if ok{
+		myLogger.Debugf("passed verify . . .")
+	}
 	
 //	myLogger.Debugf("passed certificate [% x]", certificate)
 	myLogger.Debugf("passed sigma [% s]", string(sigma))
