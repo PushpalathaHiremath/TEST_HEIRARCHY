@@ -36,6 +36,8 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	adminCert, _ := stub.GetCallerMetadata()
 	val1, _ := attr.GetValueFrom("role", adminCert)
 
+	ok, err := t.isCaller(stub, adminCert)
+	
 //	myLogger.Debugf("passed certificate [% x]", certificate)
 	myLogger.Debugf("passed sigma [% s]", string(sigma))
 	myLogger.Debugf("passed payload [% s]", string(payload))
@@ -67,6 +69,54 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	bytes, _ := json.Marshal(jsonResp)
 
 	return bytes, nil
+}
+
+func (t *AssetManagementChaincode) isCaller(stub shim.ChaincodeStubInterface, certificate []byte) (bool, error) {
+	myLogger.Debug("Check caller...")
+
+	// In order to enforce access control, we require that the
+	// metadata contains the signature under the signing key corresponding
+	// to the verification key inside certificate of
+	// the payload of the transaction (namely, function name and args) and
+	// the transaction binding (to avoid copying attacks)
+
+	// Verify \sigma=Sign(certificate.sk, tx.Payload||tx.Binding) against certificate.vk
+	// \sigma is in the metadata
+
+	sigma, err := stub.GetCallerMetadata()
+	if err != nil {
+		return false, errors.New("Failed getting metadata")
+	}
+	payload, err := stub.GetPayload()
+	if err != nil {
+		return false, errors.New("Failed getting payload")
+	}
+	binding, err := stub.GetBinding()
+	if err != nil {
+		return false, errors.New("Failed getting binding")
+	}
+
+	myLogger.Debugf("passed certificate [% x]", certificate)
+	myLogger.Debugf("passed sigma [% x]", sigma)
+	myLogger.Debugf("passed payload [% x]", payload)
+	myLogger.Debugf("passed binding [% x]", binding)
+
+	ok, err := stub.VerifySignature(
+		certificate,
+		sigma,
+		append(payload, binding...),
+	)
+	if err != nil {
+		myLogger.Errorf("Failed checking signature [%s]", err)
+		return ok, err
+	}
+	if !ok {
+		myLogger.Error("Invalid signature")
+	}
+
+	myLogger.Debug("Check caller...Verified!")
+
+	return ok, err
 }
 
 func main() {
