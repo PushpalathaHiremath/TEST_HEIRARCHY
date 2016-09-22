@@ -31,13 +31,17 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	sigma, _ := stub.GetCallerMetadata()
 	payload, _ := stub.GetPayload()
 	binding, _ := stub.GetBinding()
+	
+	adminCert, err := stub.GetCallerMetadata()
+	val1, _ := attr.GetValueFrom("role", adminCert)
 
 //	myLogger.Debugf("passed certificate [% x]", certificate)
 	myLogger.Debugf("passed sigma [% s]", string(sigma))
 	myLogger.Debugf("passed payload [% s]", string(payload))
 	myLogger.Debugf("passed binding [% s]", string(binding))
 	
-	myLogger.Debug("Role : ", val)
+	myLogger.Debug("Role : ", string(val))
+	myLogger.Debug("Role 1: ", string(val1))
 	stub.PutState("role",val)
 
 	return nil, nil
