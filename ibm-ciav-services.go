@@ -33,7 +33,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	payload, _ := stub.GetPayload()
 	binding, _ := stub.GetBinding()
 	
-	adminCert, err := stub.GetCallerMetadata()
+	adminCert, _ := stub.GetCallerMetadata()
 	val1, _ := attr.GetValueFrom("role", adminCert)
 
 //	myLogger.Debugf("passed certificate [% x]", certificate)
