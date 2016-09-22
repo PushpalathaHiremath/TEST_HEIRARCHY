@@ -28,7 +28,15 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 
 	myLogger.Debug("I'm in Invoke . . . ")
 	val, _ := stub.ReadCertAttribute("role")
+	sigma, _ := stub.GetCallerMetadata()
+	payload, _ := stub.GetPayload()
+	binding, _ := stub.GetBinding()
 
+	myLogger.Debugf("passed certificate [% x]", certificate)
+	myLogger.Debugf("passed sigma [% x]", sigma)
+	myLogger.Debugf("passed payload [% x]", payload)
+	myLogger.Debugf("passed binding [% x]", binding)
+	
 	myLogger.Debug("Role : ", val)
 	stub.PutState("role",val)
 
