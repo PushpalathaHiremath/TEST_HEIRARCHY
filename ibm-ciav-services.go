@@ -43,6 +43,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	
 	myLogger.Debug("Role : ", string(val))
 	myLogger.Debug("Role 1: ", string(val1))
+	myLogger.Debug("~~~~~~~~~~~~~~~~~ END ~~~~~~~~~~~~~~~~")
 	stub.PutState("role",val)
 
 	return nil, nil
