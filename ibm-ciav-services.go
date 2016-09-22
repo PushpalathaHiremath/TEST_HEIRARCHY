@@ -32,7 +32,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	payload, _ := stub.GetPayload()
 	binding, _ := stub.GetBinding()
 
-	myLogger.Debugf("passed certificate [% x]", certificate)
+//	myLogger.Debugf("passed certificate [% x]", certificate)
 	myLogger.Debugf("passed sigma [% x]", sigma)
 	myLogger.Debugf("passed payload [% x]", payload)
 	myLogger.Debugf("passed binding [% x]", binding)
