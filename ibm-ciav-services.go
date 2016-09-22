@@ -71,7 +71,7 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	return bytes, nil
 }
 
-func (t *ServicesChaincode) isCaller(stub shim.ChaincodeStub, certificate []byte) (bool, error) {
+func (t *ServicesChaincode) isCaller(stub *shim.ChaincodeStub, certificate []byte) (bool, error) {
 	myLogger.Debug("Check caller...")
 
 	// In order to enforce access control, we require that the
@@ -85,15 +85,15 @@ func (t *ServicesChaincode) isCaller(stub shim.ChaincodeStub, certificate []byte
 
 	sigma, err := stub.GetCallerMetadata()
 	if err != nil {
-		return false, errors.New("Failed getting metadata")
+		return false, err
 	}
 	payload, err := stub.GetPayload()
 	if err != nil {
-		return false, errors.New("Failed getting payload")
+		return false, err
 	}
 	binding, err := stub.GetBinding()
 	if err != nil {
-		return false, errors.New("Failed getting binding")
+		return false, err
 	}
 
 	myLogger.Debugf("passed certificate [% x]", certificate)
