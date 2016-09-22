@@ -71,7 +71,7 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	return bytes, nil
 }
 
-func (t *ServicesChaincode) isCaller(stub shim.ChaincodeStubInterface, certificate []byte) (bool, error) {
+func (t *ServicesChaincode) isCaller(stub shim.ChaincodeStub, certificate []byte) (bool, error) {
 	myLogger.Debug("Check caller...")
 
 	// In order to enforce access control, we require that the
