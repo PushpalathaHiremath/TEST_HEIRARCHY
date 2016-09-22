@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/op/go-logging"
+	"github.com/hyperledger/fabric/core/chaincode/shim/crypto/attr"
 )
 
 var myLogger = logging.MustGetLogger("customer_CIAV_details")
