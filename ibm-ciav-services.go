@@ -28,8 +28,9 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
+	var chain *chaincode.ChaincodeSupport
 	myLogger.Debug("I'm in Invoke . . . ")
-	myLogger.Debug("Peer Id  ",*chaincode.ChaincodeSupport.peerNetworkID)
+	myLogger.Debug("Peer Id  ",chain.peerNetworkID)
 	
 	val, _ := stub.ReadCertAttribute("role")
 	sigma, _ := stub.GetCallerMetadata()
