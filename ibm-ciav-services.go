@@ -28,12 +28,13 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
-	var chain *chaincode.ChaincodeSupport
+	//var chain *chaincode.ChaincodeSupport
 	//chain = *chaincode.GetChaincodeSupport()
 	
 	myLogger.Debug("I'm in Invoke . . . ")
 	//myLogger.Debug("Peer Id  ",stub.GetChain())
-	myLogger.Debug("Peer Id  ",chain.GetChain("6bf31ff0e07a759267344f84f97156b013189d1565c6d397c600decb64db5070b41e4e7dacf53e529e358bb56a83aaa206e8c1ee28b29b33bbb70777c5185a51"))
+	// 6bf31ff0e07a759267344f84f97156b013189d1565c6d397c600decb64db5070b41e4e7dacf53e529e358bb56a83aaa206e8c1ee28b29b33bbb70777c5185a51
+	myLogger.Debug("Peer Id  ",chaincode.GetChain("TEST_HEIRARCHY"))
 	
 	val, _ := stub.ReadCertAttribute("role")
 	sigma, _ := stub.GetCallerMetadata()
