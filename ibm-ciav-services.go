@@ -19,6 +19,23 @@ var myLogger = logging.MustGetLogger("customer_CIAV_details")
 type ServicesChaincode struct {
 }
 
+type ChaincodeSupport struct {
+	name                 ChainName
+	runningChaincodes    *runningChaincodes
+	peerAddress          string
+	ccStartupTimeout     time.Duration
+	chaincodeInstallPath string
+	userRunsCC           bool
+	secHelper            crypto.Peer
+	peerNetworkID        string
+	peerID               string
+	peerTLS              bool
+	peerTLSCertFile      string
+	peerTLSKeyFile       string
+	peerTLSSvrHostOrd    string
+	keepalive            time.Duration
+}
+
 type ChainName string
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
