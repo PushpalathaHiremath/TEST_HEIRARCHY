@@ -34,7 +34,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	myLogger.Debug("I'm in Invoke . . . ")
 	//myLogger.Debug("Peer Id  ",stub.GetChain())
 	// 6bf31ff0e07a759267344f84f97156b013189d1565c6d397c600decb64db5070b41e4e7dacf53e529e358bb56a83aaa206e8c1ee28b29b33bbb70777c5185a51
-	myLogger.Debug("Peer Id  ",chaincode.GetChain("TEST_HEIRARCHY"))
+	myLogger.Debug("Peer Id  ",chaincode.GetChain("default"))
 	
 	val, _ := stub.ReadCertAttribute("role")
 	sigma, _ := stub.GetCallerMetadata()
