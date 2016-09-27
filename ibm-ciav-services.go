@@ -19,6 +19,8 @@ var myLogger = logging.MustGetLogger("customer_CIAV_details")
 type ServicesChaincode struct {
 }
 
+type ChainName string
+
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
 	err := stub.PutState("role", []byte("0"))
