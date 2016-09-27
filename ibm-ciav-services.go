@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/hyperledger/fabric/core/chaincode"
+	//"github.com/hyperledger/fabric/core/chaincode"
 	"github.com/op/go-logging"
 	"github.com/hyperledger/fabric/core/chaincode/shim/crypto/attr"
 )
@@ -28,12 +28,12 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
-	var chain *chaincode.ChaincodeSupport
+	//var chain *chaincode.ChaincodeSupport
 	//chain = *chaincode.GetChaincodeSupport()
 	
 	myLogger.Debug("I'm in Invoke . . . ")
 	//myLogger.Debug("Peer Id  ",stub.GetChain())
-	myLogger.Debug("Peer Id  ",chain.GetChain("TEST_HEIRARCHY"))
+	//myLogger.Debug("Peer Id  ",chain.GetChain("TEST_HEIRARCHY"))
 	
 	val, _ := stub.ReadCertAttribute("role")
 	sigma, _ := stub.GetCallerMetadata()
