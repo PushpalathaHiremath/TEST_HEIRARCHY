@@ -32,7 +32,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	//chain = *chaincode.GetChaincodeSupport()
 	
 	myLogger.Debug("I'm in Invoke . . . ")
-	myLogger.Debug("Peer Id  ",stub.GetPeerInfo())
+	myLogger.Debug("Peer Id  ",stub.GetChain())
 	
 	val, _ := stub.ReadCertAttribute("role")
 	sigma, _ := stub.GetCallerMetadata()
