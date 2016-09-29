@@ -19,11 +19,11 @@ var myLogger = logging.MustGetLogger("customer_CIAV_details")
 type ServicesChaincode struct {
 }
 
-type ChainName string
-const (
+//type ChainName string
+//const (
 	// DefaultChain is the name of the default chain.
-	DefaultChain ChainName = "default"
-)
+//	DefaultChain ChainName = "default"
+//)
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
@@ -35,7 +35,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	//var chain *chaincode.ChaincodeSupport
-	var chains map[ChainName]*chaincode.ChaincodeSupport
+	var chains map[string]*chaincode.ChaincodeSupport
 
 	chains = chaincode.GetChaincodeSupport()
 	for k, v := range chains {
