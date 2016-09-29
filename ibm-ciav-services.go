@@ -35,10 +35,14 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	//var chain *chaincode.ChaincodeSupport
+	myLogger.Debug("Initialize chains . . . ")
 	var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
 
+	myLogger.Debug("Assign value to chains . . . ")
 	chains = chaincode.GetChaincodeSupport()
+	myLogger.Debug("Print chains . . . ")
 	for k, v := range chains {
+		myLogger.Debug("Inside Loop . . . ")
     		fmt.Printf("key[%s] value[%s]\n", k, v)
 	}
 	
