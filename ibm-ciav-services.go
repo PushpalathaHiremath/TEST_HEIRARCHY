@@ -20,6 +20,10 @@ type ServicesChaincode struct {
 }
 
 type ChainName string
+const (
+	// DefaultChain is the name of the default chain.
+	DefaultChain ChainName = "default"
+)
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
