@@ -35,7 +35,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	//var chain *chaincode.ChaincodeSupport
-	var chains map[string]*chaincode.ChaincodeSupport
+	var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
 
 	chains = chaincode.GetChaincodeSupport()
 	for k, v := range chains {
