@@ -34,7 +34,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	var chains map[ChainName]*chaincode.ChaincodeSupport
 
 	chains = chaincode.GetChaincodeSupport()
-	for k, v := range m {
+	for k, v := range chains {
     		fmt.Printf("key[%s] value[%s]\n", k, v)
 	}
 	
