@@ -34,7 +34,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 	for key, val := range chains {
 		myLogger.Debug("APP : Inside Loop . . . ")
 	    	myLogger.Debug("key[%s] \n", key)
-		myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
+		//myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
 	}
 	
 	return nil, err
@@ -55,7 +55,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	for key, val := range chains {
 		myLogger.Debug("APP INVOKE :Inside Loop . . . ")
 	    	myLogger.Debug("key[%s] \n", key)
-		myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
+		//myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
 	}
 	
 	
