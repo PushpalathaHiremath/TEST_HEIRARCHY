@@ -43,7 +43,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
-	myLogger.Debug("PEER ADDR: ",shim.GetPeerInfo())
+	//myLogger.Debug("PEER ADDR: ",shim.GetPeerInfo())
 	
 	//var chain *chaincode.ChaincodeSupport
 	myLogger.Debug("Initialize chains . . . ")
