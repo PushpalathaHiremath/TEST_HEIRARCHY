@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	//"github.com/hyperledger/fabric/core/chaincode"
+	"github.com/hyperledger/fabric/core/chaincode"
 	"github.com/op/go-logging"
 	"github.com/hyperledger/fabric/core/chaincode/shim/crypto/attr"
 )
@@ -25,9 +25,12 @@ type ServicesChaincode struct {
 //	DefaultChain ChainName = "default"
 //)
 
-func (t *ServicesChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
 	err := stub.PutState("role", []byte("0"))
+	
+	myLogger.Debug("Print current chain . . . [%s]",chaincode.GetChainName())
+	
 	//var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
 // 	chains = chaincode.GetChaincodeSupport()
 // 	myLogger.Debug("Print chains . . . ")
@@ -41,7 +44,7 @@ func (t *ServicesChaincode) Init(stub shim.ChaincodeStubInterface, function stri
 }
 
 
-func (t *ServicesChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	//myLogger.Debug("PEER ADDR: ",shim.GetPeerInfo())
 	
@@ -95,11 +98,11 @@ func (t *ServicesChaincode) Invoke(stub shim.ChaincodeStubInterface, function st
 /*
  		Get Customer record by customer id or PAN number
 */
-func (t *ServicesChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	return read(stub, args)
 }
 
-func read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	role, _ := stub.GetState("role")
 
@@ -111,7 +114,7 @@ func read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	return bytes, nil
 }
 
-func (t *ServicesChaincode) isCaller(stub shim.ChaincodeStubInterface, certificate []byte) (bool, error) {
+func (t *ServicesChaincode) isCaller(stub *shim.ChaincodeStub, certificate []byte) (bool, error) {
 	myLogger.Debug("Check caller...")
 
 	// In order to enforce access control, we require that the
@@ -165,4 +168,5 @@ func main() {
 		fmt.Printf("Error starting ServicesChaincode: %s", err)
 	}
 }
+
 
