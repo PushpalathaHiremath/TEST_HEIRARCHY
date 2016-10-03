@@ -32,7 +32,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 	chains = chaincode.GetChaincodeSupport()
 	myLogger.Debug("Print chains . . . ")
 	for key, val := range chains {
-		myLogger.Debug("Inside Loop . . . ")
+		myLogger.Debug("APP : Inside Loop . . . ")
 	    	myLogger.Debug("key[%s] \n", key)
 		myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
 	}
@@ -53,7 +53,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	chains = chaincode.GetChaincodeSupport()
 	myLogger.Debug("Print chains . . . ")
 	for key, val := range chains {
-		myLogger.Debug("Inside Loop . . . ")
+		myLogger.Debug("APP INVOKE :Inside Loop . . . ")
 	    	myLogger.Debug("key[%s] \n", key)
 		myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
 	}
