@@ -25,7 +25,7 @@ type ServicesChaincode struct {
 //	DefaultChain ChainName = "default"
 //)
 
-func (t *ServicesChaincode) Init(stub *shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *ServicesChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
 	err := stub.PutState("role", []byte("0"))
 	//var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
@@ -41,7 +41,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStubInterface, function str
 }
 
 
-func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *ServicesChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	//myLogger.Debug("PEER ADDR: ",shim.GetPeerInfo())
 	
@@ -95,11 +95,11 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStubInterface, function s
 /*
  		Get Customer record by customer id or PAN number
 */
-func (t *ServicesChaincode) Query(stub *shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *ServicesChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	return read(stub, args)
 }
 
-func read(stub *shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	role, _ := stub.GetState("role")
 
@@ -111,7 +111,7 @@ func read(stub *shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	return bytes, nil
 }
 
-func (t *ServicesChaincode) isCaller(stub *shim.ChaincodeStubInterface, certificate []byte) (bool, error) {
+func (t *ServicesChaincode) isCaller(stub shim.ChaincodeStubInterface, certificate []byte) (bool, error) {
 	myLogger.Debug("Check caller...")
 
 	// In order to enforce access control, we require that the
@@ -165,3 +165,4 @@ func main() {
 		fmt.Printf("Error starting ServicesChaincode: %s", err)
 	}
 }
+
