@@ -28,14 +28,14 @@ type ServicesChaincode struct {
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
 	err := stub.PutState("role", []byte("0"))
-	var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
-	chains = chaincode.GetChaincodeSupport()
-	myLogger.Debug("Print chains . . . ")
-	for key, val := range chains {
-		myLogger.Debug("APP : Inside Loop . . . ")
-	    	myLogger.Debug("key[%s] \n", key)
-		myLogger.Debug("chains[name].peerAddress: %s", val)
-	}
+	//var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
+// 	chains = chaincode.GetChaincodeSupport()
+// 	myLogger.Debug("Print chains . . . ")
+// 	for key, val := range chains {
+// 		myLogger.Debug("APP : Inside Loop . . . ")
+// 	    	myLogger.Debug("key[%s] \n", key)
+// 		myLogger.Debug("chains[name].peerAddress: %s", val)
+// 	}
 	
 	return nil, err
 }
@@ -47,16 +47,16 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	
 	//var chain *chaincode.ChaincodeSupport
 	myLogger.Debug("Initialize chains . . . ")
-	var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
+// 	var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
 
-	myLogger.Debug("Assign value to chains . . . ")
-	chains = chaincode.GetChaincodeSupport()
-	myLogger.Debug("Print chains . . . ")
-	for key, val := range chains {
-		myLogger.Debug("APP INVOKE :Inside Loop . . . ")
-	    	myLogger.Debug("key[%s] \n", key)
-		myLogger.Debug("chains[name].peerAddress: %s", val)
-	}
+// 	myLogger.Debug("Assign value to chains . . . ")
+// 	chains = chaincode.GetChaincodeSupport()
+// 	myLogger.Debug("Print chains . . . ")
+// 	for key, val := range chains {
+// 		myLogger.Debug("APP INVOKE :Inside Loop . . . ")
+// 	    	myLogger.Debug("key[%s] \n", key)
+// 		myLogger.Debug("chains[name].peerAddress: %s", val)
+// 	}
 	
 	
 	myLogger.Debug("I'm in Invoke . . . ")
