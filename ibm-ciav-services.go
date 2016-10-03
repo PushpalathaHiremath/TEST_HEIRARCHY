@@ -36,7 +36,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 // 	    	myLogger.Debug("key[%s] \n", key)
 // 		myLogger.Debug("chains[name].peerAddress: %s", val)
 // 	}
-	
+	myLogger.Debug("Check Chain Name . . . ",chaincode.GetChainName())
 	return nil, err
 }
 
