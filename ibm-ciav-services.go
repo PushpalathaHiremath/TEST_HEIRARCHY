@@ -28,7 +28,7 @@ type ServicesChaincode struct {
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
 	err := stub.PutState("role", []byte("0"))
-	
+	var chains map[chaincode.ChainName]*chaincode.ChaincodeSupport
 	chains = chaincode.GetChaincodeSupport()
 	myLogger.Debug("Print chains . . . ")
 	for key, val := range chains {
