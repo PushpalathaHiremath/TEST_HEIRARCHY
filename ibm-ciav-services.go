@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/hyperledger/fabric/core/chaincode"
+	//"github.com/hyperledger/fabric/core/chaincode"
 	"github.com/op/go-logging"
 	"github.com/hyperledger/fabric/core/chaincode/shim/crypto/attr"
 )
@@ -36,7 +36,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 // 	    	myLogger.Debug("key[%s] \n", key)
 // 		myLogger.Debug("chains[name].peerAddress: %s", val)
 // 	}
-	myLogger.Debug("Check Chain Name . . . ",chaincode.GetChainName())
+	//myLogger.Debug("Check Chain Name . . . ",chaincode.GetChainName())
 	return nil, err
 }
 
