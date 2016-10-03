@@ -28,6 +28,15 @@ type ServicesChaincode struct {
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Hi Abhishek . . . ")
 	err := stub.PutState("role", []byte("0"))
+	
+	chains = chaincode.GetChaincodeSupport()
+	myLogger.Debug("Print chains . . . ")
+	for key, val := range chains {
+		myLogger.Debug("Inside Loop . . . ")
+	    	myLogger.Debug("key[%s] \n", key)
+		myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
+	}
+	
 	return nil, err
 }
 
@@ -43,9 +52,10 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	myLogger.Debug("Assign value to chains . . . ")
 	chains = chaincode.GetChaincodeSupport()
 	myLogger.Debug("Print chains . . . ")
-	for k, v := range chains {
+	for key, val := range chains {
 		myLogger.Debug("Inside Loop . . . ")
-    		fmt.Printf("key[%s] value[%s]\n", k, v)
+	    	myLogger.Debug("key[%s] \n", key)
+		myLogger.Debug("chains[name].peerAddress: %s", val.peerAddress)
 	}
 	
 	
