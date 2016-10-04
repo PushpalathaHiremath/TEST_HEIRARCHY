@@ -43,7 +43,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
-	myLogger.Debug("PEER ADDR: ",shim.GetPeerInfo())
+// 	myLogger.Debug("PEER ADDR: ",shim.GetPeerInfo())
 	
 	//var chain *chaincode.ChaincodeSupport
 	myLogger.Debug("Initialize chains . . . ")
@@ -65,28 +65,28 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	//myLogger.Debug("Peer Id  ",chaincode.GetChain("default"))
 	//myLogger.Debug("Peer Id  ",chain.peerAddress)
 	
-	val, _ := stub.ReadCertAttribute("role")
-	sigma, _ := stub.GetCallerMetadata()
-	payload, _ := stub.GetPayload()
-	binding, _ := stub.GetBinding()
+// 	val, _ := stub.ReadCertAttribute("role")
+// 	sigma, _ := stub.GetCallerMetadata()
+// 	payload, _ := stub.GetPayload()
+// 	binding, _ := stub.GetBinding()
 	
-	adminCert, _ := stub.GetCallerMetadata()
-	val1, _ := attr.GetValueFrom("role", adminCert)
+// 	adminCert, _ := stub.GetCallerMetadata()
+// 	val1, _ := attr.GetValueFrom("role", adminCert)
 
-	ok, _ := t.isCaller(stub, adminCert)
-	if ok{
-		myLogger.Debugf("passed verify . . .")
-	}
+// 	ok, _ := t.isCaller(stub, adminCert)
+// 	if ok{
+// 		myLogger.Debugf("passed verify . . .")
+// 	}
 	
 //	myLogger.Debugf("passed certificate [% x]", certificate)
-	myLogger.Debugf("passed sigma [% s]", string(sigma))
-	myLogger.Debugf("passed payload [% s]", string(payload))
-	myLogger.Debugf("passed binding [% s]", string(binding))
+// 	myLogger.Debugf("passed sigma [% s]", string(sigma))
+// 	myLogger.Debugf("passed payload [% s]", string(payload))
+// 	myLogger.Debugf("passed binding [% s]", string(binding))
 	
-	myLogger.Debug("Role : ", string(val))
-	myLogger.Debug("Role 1: ", string(val1))
-	myLogger.Debug("~~~~~~~~~~~~~~~~~ END ~~~~~~~~~~~~~~~~")
-	stub.PutState("role",val)
+// 	myLogger.Debug("Role : ", string(val))
+// 	myLogger.Debug("Role 1: ", string(val1))
+// 	myLogger.Debug("~~~~~~~~~~~~~~~~~ END ~~~~~~~~~~~~~~~~")
+// 	stub.PutState("role",val)
 
 	return nil, nil
 
@@ -101,14 +101,14 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 
 func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
-	role, _ := stub.GetState("role")
+// 	role, _ := stub.GetState("role")
 
-	jsonResp := "{ " + "Role: "+ string(role) +"}"
-	fmt.Printf("Query Response:%s\n", jsonResp)
+// 	jsonResp := "{ " + "Role: "+ string(role) +"}"
+// 	fmt.Printf("Query Response:%s\n", jsonResp)
 
-	bytes, _ := json.Marshal(jsonResp)
+// 	bytes, _ := json.Marshal(jsonResp)
 
-	return bytes, nil
+	return nil, nil
 }
 
 func (t *ServicesChaincode) isCaller(stub *shim.ChaincodeStub, certificate []byte) (bool, error) {
