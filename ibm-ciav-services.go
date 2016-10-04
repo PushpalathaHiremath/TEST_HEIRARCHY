@@ -44,12 +44,12 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	}
 
 //	myLogger.Debugf("passed certificate [% x]", certificate)
-	myLogger.Debugf("passed sigma [% s]", string(sigma))
-	myLogger.Debugf("passed payload [% s]", string(payload))
-	myLogger.Debugf("passed binding [% s]", string(binding))
+	myLogger.Debugf("Invoke passed sigma [% s]", string(sigma))
+	myLogger.Debugf("Invoke passed payload [% s]", string(payload))
+	myLogger.Debugf("Invoke passed binding [% s]", string(binding))
 
-	myLogger.Debug("Role : ", string(val))
-	myLogger.Debug("~~~~~~~~~~~~~~~~~ END ~~~~~~~~~~~~~~~~")
+	myLogger.Debug("Invoke Role : ", string(val))
+	myLogger.Debug("~~~~~~~~~~~~~~~~~Invoke END ~~~~~~~~~~~~~~~~")
 
 	//var chain *chaincode.ChaincodeSupport
 	// myLogger.Debug("Initialize chains . . . ")
