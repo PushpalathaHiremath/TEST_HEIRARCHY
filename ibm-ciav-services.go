@@ -6,12 +6,12 @@ Licensed under the IBM India Pvt Ltd, Version 1.0 (the "License");
 package main
 
 import (
-	"encoding/json"
+// 	"encoding/json"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	//"github.com/hyperledger/fabric/core/chaincode"
 	"github.com/op/go-logging"
-	"github.com/hyperledger/fabric/core/chaincode/shim/crypto/attr"
+// 	"github.com/hyperledger/fabric/core/chaincode/shim/crypto/attr"
 )
 
 var myLogger = logging.MustGetLogger("customer_CIAV_details")
